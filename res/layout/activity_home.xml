@@ -23,9 +23,28 @@
             android:background="@drawable/heima" />
 
         <TextView
+            android:id="@+id/iv_home_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="黑马手机卫士" />
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="40dip"
+            android:layout_toRightOf="@id/iv_home_logo"
+            android:text="黑马手机卫士"
+            android:textSize="30sp" />
+
+        <com.zheng.mobilesafe.ui.FocusedTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_home_title"
+            android:layout_marginLeft="20dip"
+            android:layout_marginTop="15dip"
+            android:layout_toRightOf="@id/iv_home_logo"
+            android:ellipsize="marquee"
+            android:focusableInTouchMode="true"
+            android:singleLine="true"
+            android:text="黑马手机卫士,时刻保护您的手机安全,版权所有,盗版必究."
+            android:textColor="#ff0000"
+            android:textSize="18sp" />
     </RelativeLayout>
 
 </RelativeLayout>

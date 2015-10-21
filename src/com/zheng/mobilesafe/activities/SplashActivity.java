@@ -84,6 +84,8 @@ public class SplashActivity extends Activity {
 	 */
 	protected void showUpdateDialog(String dest) {
 		AlertDialog.Builder builder = new Builder(this);
+		//设置只能点击确定或者取消按钮
+		builder.setCancelable(false);
 		// 设置标题
 		builder.setTitle("升级提醒");
 		// 设置内容
