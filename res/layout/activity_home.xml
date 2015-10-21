@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="这里是home界面" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,4 +42,14 @@
             android:textSize="18sp" />
     </RelativeLayout>
 
-</RelativeLayout>
+    <GridView
+        android:id="@+id/gv_home_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#99aabbcc"
+        android:horizontalSpacing="5dip"
+        android:verticalSpacing="5dip"
+        android:numColumns="2" >
+    </GridView>
+
+</LinearLayout>

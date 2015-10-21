@@ -36,6 +36,25 @@
 		android:ellipsize="marquee"
         android:focusableInTouchMode="true"
 			
+##3,设置home的功能界面
+	使用gridview+打气筒填充功能界面
+	设置不同背景色产生边框效果
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
