@@ -28,7 +28,8 @@
             android:text="设置更新内容"
             android:textSize="20sp" />
 
-        <ImageView
+        <com.zheng.mobilesafe.ui.SwitchImageView
+            android:id="@+id/iv_setting_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -51,7 +52,7 @@
             android:text="设置选项1"
             android:textSize="20sp" />
 
-        <ImageView
+        <com.zheng.mobilesafe.ui.SwitchImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -74,7 +75,7 @@
             android:text="设置选项2"
             android:textSize="20sp" />
 
-        <ImageView
+        <com.zheng.mobilesafe.ui.SwitchImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
