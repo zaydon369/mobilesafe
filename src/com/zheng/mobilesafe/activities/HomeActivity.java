@@ -2,6 +2,7 @@ package com.zheng.mobilesafe.activities;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +89,10 @@ public class HomeActivity extends Activity {
 			desc.setText(descs[position]);
 			return view;
 		}
+	}
+	public void enterSettingActivity(View view){
+		Intent intent = new Intent(HomeActivity.this,SettingActivity.class);
+		startActivity(intent);
 	}
 
 }

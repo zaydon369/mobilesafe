@@ -40,6 +40,15 @@
             android:text="黑马手机卫士,时刻保护您的手机安全,版权所有,盗版必究."
             android:textColor="#ff0000"
             android:textSize="18sp" />
+        <ImageButton 
+            android:onClick="enterSettingActivity"
+            android:src="@drawable/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="3dip"
+            android:layout_marginTop="3dip"
+            />
     </RelativeLayout>
 
     <GridView
