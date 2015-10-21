@@ -48,9 +48,12 @@ public class SplashActivity extends Activity {
 	private String downloadpath;
 	// 定义下载进度条
 	ProgressDialog pd;
-	// // 定义Message,用于子线程和主线程间的数据传递
-	// private Message msg = Message.obtain();
-
+	//设置开始访问服务器的系统时间(用于控制停留时间)
+	private long startTime;
+	//设置准备进入UI的系统时间(用于控制停留时间)
+	private long endTime;
+	// 定义Message,用于子线程和主线程间的数据传递
+	private Message msg = Message.obtain();
 	// 使用handler接收子线程传递的消息,进行对应的UI更改
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -73,18 +76,6 @@ public class SplashActivity extends Activity {
 		}
 
 	};
-
-	/**
-	 * 加载主UI
-	 */
-	private void loadMainUI() {
-		// 进入home界面
-		// 定义跳转到home界面的意图
-		Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-		startActivity(intent);
-		finish();
-	};
-
 	/**
 	 * 显示升级提示框
 	 * 
@@ -204,8 +195,11 @@ public class SplashActivity extends Activity {
 		String version = PackageInfoUtils.getPackageVersion(this);
 		// 把版本号显示到splash中
 		tv_splash_version.setText("版本:" + version);
+		//定义开始计时时间
+		startTime=SystemClock.uptimeMillis();
 		// 开启子线程获取服务器的最新版本
 		new Thread(new CheckVersionTack()).start();
+		
 	}
 
 	/**
@@ -224,7 +218,8 @@ public class SplashActivity extends Activity {
 				// 设置请求方式为GET
 				conn.setRequestMethod("GET");
 				// 设置访问超时时间2秒
-				conn.setReadTimeout(2000);
+				//连接超时时间..
+				conn.setConnectTimeout(2000);
 				// 得到返回码
 				int code = conn.getResponseCode();
 				// 如果返回200说明连接成功
@@ -250,48 +245,62 @@ public class SplashActivity extends Activity {
 						Log.i(TAG, "发现新版本,提示更新!!");
 						// 设置下载版本地址
 						downloadpath = json.getString("downloadpath");
-						Message msg = Message.obtain();
 						// 设置Message代码
 						msg.what = SHOW_UPDATE_DIALOG;
 						// 设置消息内容
 						msg.obj = description;
-						// 发送Message
-						handler.sendMessage(msg);
 					}
 				} else {// 服务器连接失败,提示错误代码
-					Message msg = Message.obtain();
+
 					msg.what = ERROR;
-					msg.obj = 000;
-					handler.sendMessage(msg);
+					msg.obj = "000";
 					Log.i(TAG, "连接返回码不是200");
 				}
-				// Log.i(TAG, "连接超时...");
+			//	 Log.i(TAG, "连接超时...");
 			} catch (MalformedURLException e) {
-				Message msg = Message.obtain();
+
 				e.printStackTrace();
 				msg.what = ERROR;
-				msg.obj = 404;
-				handler.sendMessage(msg);
+				msg.obj = "404";
 				Log.i(TAG, "URL连接错误!!");
 			} catch (IOException e) {
 				// IO读取失败
 				e.printStackTrace();
-				Message msg = Message.obtain();
+
 				msg.what = ERROR;
-				msg.obj = 606;
-				handler.sendMessage(msg);
+				msg.obj = "606";
 				Log.i(TAG, "IO流解析错误!!");
 			} catch (JSONException e) {
 				// 解析json失败
 				e.printStackTrace();
-				Message msg = Message.obtain();
 				msg.what = ERROR;
-				msg.obj = 808;
-				handler.sendMessage(msg);
+				msg.obj = "808";
+				
 				Log.i(TAG, "json解析错误!!");
+			}finally{
+				//定义进入UIhome的时间
+				endTime=SystemClock.uptimeMillis();
+				Log.i(TAG, "开始时间"+startTime+"结束时间:"+endTime);
+				Log.i(TAG,"耗时:"+(endTime-startTime));
+				if((endTime-startTime)<2000){
+					
+				SystemClock.sleep(2000-(endTime-startTime));
+				
+				}
+				//统一在finally发送消息,避免重复发送
+				handler.sendMessage(msg);
 			}
 		}
 
 	}
-
+	/**
+	 * 加载主UI
+	 */
+	private void loadMainUI() {
+		// 进入home界面
+		// 定义跳转到home界面的意图
+		Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+		startActivity(intent);
+		finish();
+	};
 }
