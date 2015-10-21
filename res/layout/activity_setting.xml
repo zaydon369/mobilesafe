@@ -14,10 +14,11 @@
         android:textSize="30sp" />
 
     <RelativeLayout
+        android:id="@+id/rl_setting_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
-        android:background="@drawable/first_normal"
+        android:background="@drawable/item_setting_first"
         android:gravity="center_horizontal" >
 
         <TextView
