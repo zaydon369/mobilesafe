@@ -32,12 +32,14 @@
         android:orientation="vertical" >
 
         <EditText
+            android:id="@+id/et_dialog_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:password="true"
             android:hint="请输入您的密码" />
 
         <EditText
+            android:id="@+id/et_dialog_pwd_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:password="true"
@@ -52,6 +54,7 @@
         android:gravity="center_horizontal"
         >
         <Button 
+            android:id="@+id/bt_dialog_ok"
              android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/dg_confirm_selector"
@@ -59,6 +62,7 @@
         android:layout_marginRight="10dip"
             />
          <Button 
+             android:id="@+id/bt_dialog_cancel"
              android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/dg_cancel_selector"
