@@ -14,7 +14,7 @@ public class SwitchImageView extends ImageView {
 	/**
 	 * 开关的状态,true为打开,false为关闭
 	 */
-	private boolean switchStatus = true;
+	private boolean switchStatus;
 	/** 获取开关的状态
 	 * @return the switchStatus
 	 */

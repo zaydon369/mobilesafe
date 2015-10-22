@@ -17,6 +17,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -52,6 +54,34 @@ public class SplashActivity extends Activity {
 	private long startTime;
 	//设置准备进入UI的系统时间(用于控制停留时间)
 	private long endTime;
+	//共享参数,设置配置文件
+	private SharedPreferences sp;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_splash);
+		// 初始化控件
+		tv_splash_version = (TextView) findViewById(R.id.tv_splash_version);
+		// 获取当前版本号
+		String version = PackageInfoUtils.getPackageVersion(this);
+		// 把版本号显示到splash中
+		tv_splash_version.setText("版本:" + version);
+		//获取配置文件,判断是否应该检测更新
+		sp=getSharedPreferences("config", MODE_PRIVATE);
+		boolean update=sp.getBoolean("update", true);
+		if(update){//如果需要进行更新则执行更新代码
+		// 开启子线程获取服务器的最新版本
+		new Thread(new CheckVersionTack()).start();
+		}else{//否则睡眠2秒进入homeUI
+			new Thread(){
+				public void run() {
+					SystemClock.sleep(1500);
+					loadMainUI();
+				};
+			}.start();
+		}
+		
+	}
 	// 定义Message,用于子线程和主线程间的数据传递
 	private Message msg = Message.obtain();
 	// 使用handler接收子线程传递的消息,进行对应的UI更改
@@ -187,22 +217,7 @@ public class SplashActivity extends Activity {
 		builder.show();
 	}
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_splash);
-		// 初始化控件
-		tv_splash_version = (TextView) findViewById(R.id.tv_splash_version);
-		// 获取当前版本号
-		String version = PackageInfoUtils.getPackageVersion(this);
-		// 把版本号显示到splash中
-		tv_splash_version.setText("版本:" + version);
-		//定义开始计时时间
-		startTime=SystemClock.uptimeMillis();
-		// 开启子线程获取服务器的最新版本
-		new Thread(new CheckVersionTack()).start();
-		
-	}
+
 
 	/**
 	 * 获取服务器的最新版本号
@@ -210,6 +225,8 @@ public class SplashActivity extends Activity {
 	private class CheckVersionTack implements Runnable {
 		@Override
 		public void run() {
+			//定义开始计时时间
+			startTime=SystemClock.uptimeMillis();
 			// 通过资源文件获取url路径
 			String path = getResources().getString(R.string.url);
 			try {
