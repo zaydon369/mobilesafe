@@ -152,7 +152,17 @@ public class HomeActivity extends Activity {
 					return;
 				}
 				dialog.dismiss();
-				// TODO 进入界面 ,未写
+				// 判断是否进入设置界面过
+				if(sp.getBoolean("configed", false)){
+					//进入手机防盗UI界面LostFindActivity
+					Intent intent=new Intent(HomeActivity.this,LostFindActivity.class);
+					startActivity(intent);
+				}else{
+					//新手向导
+					Intent intent=new Intent(HomeActivity.this,Setup1Activity.class);
+					startActivity(intent);
+				}
+				
 			}
 		});
 

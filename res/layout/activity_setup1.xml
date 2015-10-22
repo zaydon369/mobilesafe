@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:text="1.欢迎使用手机防盗"
+        style="@style/text_title" />
+
+    <TextView
+        android:text="您的手机防盗卫士"
+        style="@style/text_title2" />
+
+    <TextView
+        android:text="SIM卡变更报警"
+        style="@style/text_context" />
+
+    <TextView
+        android:text="GPS追踪"
+        style="@style/text_context" />
+
+    <TextView
+        android:text="远程锁屏"
+        style="@style/text_context" />
+
+    <TextView
+        android:text="远程销毁数据"
+        style="@style/text_context" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/setup1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dip"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/presence_online" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/radiobutton_off_background" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/radiobutton_off_background" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/radiobutton_off_background" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/bt_next"
+            style="@style/bottom_next"/>
+    </RelativeLayout>
+</LinearLayout>
