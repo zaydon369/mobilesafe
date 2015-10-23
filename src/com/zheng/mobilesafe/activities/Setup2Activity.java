@@ -52,6 +52,8 @@ public class Setup2Activity extends SetupBaseActivity {
 					//更改状态锁图标
 					iv_setup2_status.setImageResource(R.drawable.lock);
 					Toast.makeText(Setup2Activity.this, "SIM卡已成功绑定", 100).show();
+					}else{
+						Toast.makeText(Setup2Activity.this, "读取不到SIM卡的信息", 100).show();	
 					}
 				}else{
 					//解绑,把SIM卡设为空
@@ -76,6 +78,12 @@ public class Setup2Activity extends SetupBaseActivity {
 
 	@Override
 	public void next() {
+		//判断是否绑定SIM卡,如果没有绑定则不允许下一步
+				if (TextUtils.isEmpty(sp.getString("SIM", ""))) {
+					Toast.makeText(Setup2Activity.this, "请绑定SIM卡后继续", 100).show();
+				return ;
+				}
 		openNewActivityAndFinish(Setup3Activity.class);
+		
 	}
 }

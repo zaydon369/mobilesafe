@@ -13,11 +13,14 @@
         android:text="SIM卡如果变化:\n报警短信就会发给安全号码" />
 
     <EditText
+        android:id="@+id/et_setup3_safeNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:phoneNumber="true"
         android:hint="安全号码" />
 
     <Button
+        android:id="@+id/bt_setup3_selectContacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

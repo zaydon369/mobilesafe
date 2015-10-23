@@ -63,8 +63,8 @@
 		**记得将手势滑动添加到onTouchEvent方法
 	设置向导界面切换动画(使用anim文件配置)
 		overridePendingTransition
-	绑定SIM卡
-
+	绑定SIM卡(权限)
+	选择安全号码(权限,子线程)
 
 
 
