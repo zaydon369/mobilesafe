@@ -1,5 +1,7 @@
 package com.zheng.mobilesafe.activities;
 
+import com.zheng.mobilesafe.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,11 +60,13 @@ public abstract class SetupBaseActivity extends Activity {
 						// 向左移动,显示下一页
 						if ((e1.getRawX() - e2.getRawX()) > 100) {
 							next();
+							overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
 							return true;
 						}
 						// 向右移动,显示上一页
 						if ((e2.getRawX() - e1.getRawX()) > 100) {
 							pre();
+							overridePendingTransition(R.anim.anim_pre_in, R.anim.anim_pre_out);
 							return true;
 						}
 						return super.onFling(e1, e2, velocityX, velocityY);
@@ -109,6 +113,7 @@ public abstract class SetupBaseActivity extends Activity {
 	 */
 	public void showPre(View view) {
 		pre();
+		overridePendingTransition(R.anim.anim_pre_in, R.anim.anim_pre_out);
 	}
 
 	/**
@@ -118,6 +123,8 @@ public abstract class SetupBaseActivity extends Activity {
 	 */
 	public void showNext(View view) {
 		next();
+		
+		overridePendingTransition(R.anim.anim_in, R.anim.anim_out);
 	}
 
 }

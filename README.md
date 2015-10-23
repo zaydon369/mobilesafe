@@ -60,8 +60,9 @@
 		设置手势滑动页面跳转
 		(mGestureDetector = new GestureDetector(this,
 				new GestureDetector.SimpleOnGestureListener() )
-		记得将手势滑动添加到onTouchEvent方法
-
+		**记得将手势滑动添加到onTouchEvent方法
+		设置向导界面切换动画(使用anim文件配置)
+		overridePendingTransition
 
 
 
