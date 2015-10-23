@@ -56,14 +56,14 @@
 		手机防盗主界面UI基本完成
 		自动判断是否走过向导
 		给自动向导添加finish
-		重构父类方法
-		设置手势滑动页面跳转
+	重构父类方法
+	设置手势滑动页面跳转
 		(mGestureDetector = new GestureDetector(this,
 				new GestureDetector.SimpleOnGestureListener() )
 		**记得将手势滑动添加到onTouchEvent方法
-		设置向导界面切换动画(使用anim文件配置)
+	设置向导界面切换动画(使用anim文件配置)
 		overridePendingTransition
-
+	绑定SIM卡
 
 
 
