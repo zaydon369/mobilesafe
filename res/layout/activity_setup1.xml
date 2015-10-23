@@ -68,7 +68,9 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/bt_next"
-            style="@style/bottom_next"/>
+           
+            style="@style/bottom_next"
+            android:onClick="showNext"
+            />
     </RelativeLayout>
 </LinearLayout>

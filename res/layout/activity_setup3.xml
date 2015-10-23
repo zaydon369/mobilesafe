@@ -64,12 +64,12 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/bt_next"
-            style="@style/bottom_next" />
+            style="@style/bottom_next"
+            android:onClick="showNext" />
 
         <Button
-            android:id="@+id/bt_pre"
-            style="@style/bottom_pre" />
+            style="@style/bottom_pre"
+            android:onClick="showPre" />
     </RelativeLayout>
 
 </LinearLayout>

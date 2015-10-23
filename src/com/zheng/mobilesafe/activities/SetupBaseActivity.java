@@ -1,10 +1,14 @@
 package com.zheng.mobilesafe.activities;
 
+import com.zheng.mobilesafe.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 /**
  * 设置向导的抽象类
  * @author asus
@@ -21,6 +25,7 @@ public abstract  class SetupBaseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		//得到SP文件
 		sp=getSharedPreferences("config", MODE_PRIVATE);
+
 	}
 	/**
 	 * 跳转到上一页
@@ -39,5 +44,19 @@ public abstract  class SetupBaseActivity extends Activity {
 		startActivity(intent);
 		finish();
 	};
-	
+	/**
+	 * 上一页,按钮的方法
+	 * @param view
+	 */
+	public void showPre(View view){
+		pre();
+	}
+	/**
+	 * 下一页,按钮的方法
+	 * @param view
+	 */
+	public void showNext(View view){
+		next();
+	}
+
 }

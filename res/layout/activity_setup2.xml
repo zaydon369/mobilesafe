@@ -57,10 +57,11 @@
 
         <Button
             style="@style/bottom_next"
-            android:id="@+id/bt_next" />
+            android:onClick="showNext" />
 
-        <Button style="@style/bottom_pre" 
-            android:id="@+id/bt_pre"/>
+        <Button
+            style="@style/bottom_pre"
+            android:onClick="showPre" />
     </RelativeLayout>
 
 </LinearLayout>

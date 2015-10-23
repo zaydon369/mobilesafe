@@ -17,14 +17,6 @@ public class Setup1Activity extends SetupBaseActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setup1);
-		Button bt_next = (Button) findViewById(R.id.bt_next);
-		bt_next.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				next();
-			}
-		});
-
 	}
 
 	@Override
