@@ -26,12 +26,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.zheng.mobilesafe.activities.HomeActivity" >
+        <activity android:name="com.zheng.mobilesafe.activities.HomeActivity" 
+            android:launchMode="singleTop"
+            >
         </activity>
         <activity android:name="com.zheng.mobilesafe.activities.SettingActivity" >
         </activity>
         <activity 
-            android:name="com.zheng.mobilesafe.activities.LostFindActivity"></activity>
+            android:name="com.zheng.mobilesafe.activities.LostFindActivity"
+            android:launchMode="singleTask"
+            ></activity>
         <activity 
             android:name="com.zheng.mobilesafe.activities.Setup1Activity"></activity>
         <activity 

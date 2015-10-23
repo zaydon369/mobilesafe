@@ -43,16 +43,15 @@
             android:layout_marginRight="20dip"
             android:src="@drawable/unlock" />
     </LinearLayout>
-<TextView 
-     android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="#88000000"
-    />
 
-   
-        <TextView
-            style="@style/text_title2"
-            android:text="重新进入设置向导" />
+    <TextView
+        android:onClick="reseting"
+        android:clickable="true"
+        style="@style/text_title2"
+        android:background="@drawable/dg_cancel_selector"
+        android:text="重新进入设置向导" />
+
+
          <TextView
             style="@style/text_title2"
             android:text="功能简介"
