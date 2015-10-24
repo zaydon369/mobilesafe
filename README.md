@@ -65,6 +65,9 @@
 		overridePendingTransition
 	绑定SIM卡(权限)
 	选择安全号码(权限,子线程)
+	手机防盗UI界面全部完成
+	手机防盗开机启动
+	
 
 
 

@@ -10,8 +10,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application
         android:allowBackup="true"
@@ -28,24 +30,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.zheng.mobilesafe.activities.HomeActivity" 
-            >
+        <activity android:name="com.zheng.mobilesafe.activities.HomeActivity" >
         </activity>
         <activity android:name="com.zheng.mobilesafe.activities.SettingActivity" >
         </activity>
-        <activity 
+        <activity
             android:name="com.zheng.mobilesafe.activities.LostFindActivity"
-            android:launchMode="singleTask"
-            ></activity>
-        <activity 
-            android:name="com.zheng.mobilesafe.activities.Setup1Activity"></activity>
-        <activity 
-            android:name="com.zheng.mobilesafe.activities.Setup2Activity"></activity>
-        <activity 
-            android:name="com.zheng.mobilesafe.activities.Setup3Activity"></activity>
-        <activity 
-            android:name="com.zheng.mobilesafe.activities.Setup4Activity"></activity>
-        <activity android:name="com.zheng.mobilesafe.activities.SelectContactActivity"></activity>
+            android:launchMode="singleTask" >
+        </activity>
+        <activity android:name="com.zheng.mobilesafe.activities.Setup1Activity" >
+        </activity>
+        <activity android:name="com.zheng.mobilesafe.activities.Setup2Activity" >
+        </activity>
+        <activity android:name="com.zheng.mobilesafe.activities.Setup3Activity" >
+        </activity>
+        <activity android:name="com.zheng.mobilesafe.activities.Setup4Activity" >
+        </activity>
+        <activity android:name="com.zheng.mobilesafe.activities.SelectContactActivity" >
+        </activity>
+        <!-- 开机启动 -->
+        <receiver android:name="com.zheng.mobilesafe.ui.receiver.BootCompleteReceiver" >
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -61,7 +61,6 @@ public class LostFindActivity extends Activity {
 			edit.commit();
 			iv_lostfind_status.setImageResource(R.drawable.lock);
 			Toast.makeText(LostFindActivity.this, "防盗保护已开启", 0).show();
-			
 		}
 	}
 }
