@@ -1,6 +1,5 @@
 package com.zheng.mobilesafe.activities;
 
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
@@ -15,16 +14,12 @@ import com.zheng.mobilesafe.R;
  * 设置向导,界面1
  */
 public class Setup4Activity extends SetupBaseActivity {
-	// 共享数据文件
-	SharedPreferences sp;
 	CheckBox cb_setup4_status;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		// 初始化SP
-		sp = getSharedPreferences("config", MODE_PRIVATE);
 		setContentView(R.layout.activity_setup4);
 		cb_setup4_status = (CheckBox) findViewById(R.id.cb_setup4_status);
 		// 回显状态
