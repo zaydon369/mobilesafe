@@ -3,11 +3,14 @@ package com.zheng.mobilesafe.activities;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,6 +37,17 @@ public class SelectContactActivity extends Activity {
 		ll_loading.setVisibility(View.VISIBLE); 
 		// 初始化ListView
 		lv_select_contact = (ListView) findViewById(R.id.lv_select_contact);
+		//给listview添加条目点击事件
+		lv_select_contact.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				//创建意图,将数据回显到上一个页面
+				Intent data=new Intent();
+				data.putExtra("safeNumber", infos.get(position).getPhone());
+				setResult(0, data);
+				finish();
+			}});
 		//读取联系人时耗时操作,通过子线程会好点
 		new Thread(){
 			@Override
