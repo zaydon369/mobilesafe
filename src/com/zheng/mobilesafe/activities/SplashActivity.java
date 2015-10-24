@@ -120,6 +120,7 @@ public class SplashActivity extends Activity {
 		builder.setTitle("升级提醒");
 		// 设置内容
 		builder.setMessage(dest);
+		builder.setMessage(dest);
 		// 选择立即升级,进行下载升级操作
 		builder.setPositiveButton("立即升级", new OnClickListener() {
 			@Override

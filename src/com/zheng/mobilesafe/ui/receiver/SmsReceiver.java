@@ -1,8 +1,11 @@
 package com.zheng.mobilesafe.ui.receiver;
 
+import com.zheng.mobilesafe.R;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Messenger;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -29,6 +32,8 @@ public class SmsReceiver extends BroadcastReceiver {
 				abortBroadcast();//将广播终止
 			}else if("#*bjyy*#".equalsIgnoreCase(body)){
 				Log.i(TAG, "报警音乐");
+				//播放月亮之上的报警音乐
+				MediaPlayer.create(context, R.raw.ylzs).start();
 				abortBroadcast();//将广播终止
 			}else if("#*qksj*#".equalsIgnoreCase(body)){
 				Log.i(TAG, "清空数据...");
