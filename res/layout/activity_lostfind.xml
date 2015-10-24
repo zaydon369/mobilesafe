@@ -68,27 +68,27 @@
         android:drawableLeft="@drawable/dialog_title_default_icon"
         android:gravity="center_vertical"
         android:padding="5dp"
-        android:text="GPS追踪 #*location*#" />
+        android:text="GPS位置追踪 #*wzzz*#" />
 
     <TextView
         style="@style/text_context"
         android:drawableLeft="@drawable/dialog_title_default_icon"
         android:gravity="center_vertical"
         android:padding="5dp"
-        android:text="播放报警音乐 #*alarm*#" />
+        android:text="播放报警音乐 #*bjyy*#" />
 
     <TextView
         style="@style/text_context"
         android:drawableLeft="@drawable/dialog_title_default_icon"
         android:gravity="center_vertical"
         android:padding="5dp"
-        android:text="远程删除数据 #*wipedata*#" />
+        android:text="远程清空数据 #*qksj*#" />
 
     <TextView
         style="@style/text_context"
         android:drawableLeft="@drawable/dialog_title_default_icon"
         android:gravity="center_vertical"
         android:padding="5dp"
-        android:text="远程锁屏 #*lockscreen*#" />
+        android:text="远程锁屏 #*ycsp*#" />
       
 </LinearLayout>
