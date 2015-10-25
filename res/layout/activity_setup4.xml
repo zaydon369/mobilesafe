@@ -11,7 +11,7 @@
     <CheckBox
 		 android:id="@+id/cb_setup4_status"
         style="@style/text_title2"
-        android:text="打钩开启防盗保护" />
+        android:text="打钩开启防盗保护(需要管理员权限)" />
 
     <RelativeLayout
         android:layout_width="match_parent"

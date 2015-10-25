@@ -1,5 +1,9 @@
 package com.zheng.mobilesafe.activities;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +13,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Toast;
 
 import com.zheng.mobilesafe.R;
+import com.zheng.mobilesafe.ui.receiver.MyAdmin;
 
 /**
  * 设置向导,界面1
@@ -29,14 +34,21 @@ public class Setup4Activity extends SetupBaseActivity {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
 							boolean isChecked) {
-							Editor edit = sp.edit();
-							edit.putBoolean("protecting", isChecked);
-							edit.commit();
 							if(isChecked){
+								//选中时,判断是否有超级管理员权限,如果没有提示开启
+								if(MyAdmin.isAdmin(Setup4Activity.this)){	
+									//如果有超级管理员,提示防盗保护成功开启
 								Toast.makeText(Setup4Activity.this, "开启防盗保护", 0).show();
+								}else{
+									MyAdmin.openAdmin(Setup4Activity.this);
+								}
 							}else{
 								Toast.makeText(Setup4Activity.this, "取消防盗保护", 0).show();
 							}
+							//将选中状态保存到配置文件中
+							Editor edit = sp.edit();
+							edit.putBoolean("protecting", isChecked);
+							edit.commit();
 					}
 				});
 

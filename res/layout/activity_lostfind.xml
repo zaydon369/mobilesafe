@@ -12,7 +12,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:background="@drawable/dg_cancel_selector"
+        android:clickable="true"
+        android:onClick="changeSafeNumber"
+        >
         <TextView
             style="@style/text_title2"
             android:layout_weight="5"
@@ -33,7 +37,7 @@
     <LinearLayout
         android:onClick="changeProtectStatus"
         android:clickable="true"
-        style="@drawable/dg_cancel_selector"
+        android:background="@drawable/dg_cancel_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -82,13 +86,13 @@
         android:drawableLeft="@drawable/dialog_title_default_icon"
         android:gravity="center_vertical"
         android:padding="5dp"
-        android:text="远程清空数据 #*qksj*#" />
+        android:text="清空数据 #*qksj*#  (需要管理员权限)" />
 
     <TextView
         style="@style/text_context"
         android:drawableLeft="@drawable/dialog_title_default_icon"
         android:gravity="center_vertical"
         android:padding="5dp"
-        android:text="远程锁屏 #*ycsp*#" />
+        android:text="远程锁屏 #*ycsp*#  (需要管理员权限)" />
       
 </LinearLayout>
