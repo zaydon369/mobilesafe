@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zheng.mobilesafe.R;
+import com.zheng.mobilesafe.activities.utils.Md5Utils;
 
 public class HomeActivity extends Activity {
 	private static final String TAG = "HomeActivity";
@@ -146,8 +147,8 @@ public class HomeActivity extends Activity {
 					Toast.makeText(HomeActivity.this, "请输入密码", 0).show();
 					return;
 				}
-				// 如果和配置文件的不一致
-				if (!enterPwd.equals(sp.getString("password", null))) {
+				// 如果和配置文件的不一致,将输入的密码进行md5加密
+				if (!Md5Utils.encode(enterPwd).equals(sp.getString("password", null))) {
 					Toast.makeText(HomeActivity.this, "密码输入错误", 0).show();
 					return;
 				}
@@ -170,7 +171,7 @@ public class HomeActivity extends Activity {
 	}
 
 	/**
-	 * 显示设置密码对话框
+	 * 显示设置密码对话框,设置密码
 	 */
 	private void showSetupPwdDialog() {
 
@@ -201,9 +202,12 @@ public class HomeActivity extends Activity {
 					return;
 				}
 				Editor editor = sp.edit();
-				editor.putString("password", pwd);
+				//将密码进行MD5加密
+				editor.putString("password", Md5Utils.encode(pwd));
 				editor.commit();
 				dialog.dismiss();
+				//设置完密码后,弹出对话框,进入设置向导
+				showEnterPwdDialog();
 			}
 		});
 		Button bt_cancel = (Button) view.findViewById(R.id.bt_dialog_cancel);
