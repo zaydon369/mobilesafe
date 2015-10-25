@@ -68,7 +68,7 @@
         android:drawableLeft="@drawable/dialog_title_default_icon"
         android:gravity="center_vertical"
         android:padding="5dp"
-        android:text="GPS位置追踪 #*wzzz*#" />
+        android:text="GPS位置追踪 #*gps*#" />
 
     <TextView
         style="@style/text_context"
