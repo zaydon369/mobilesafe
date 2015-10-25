@@ -29,7 +29,7 @@ public class Setup4Activity extends SetupBaseActivity {
 		cb_setup4_status = (CheckBox) findViewById(R.id.cb_setup4_status);
 		// 回显状态
 		cb_setup4_status.setChecked(sp.getBoolean("protecting", false));
-		// 给单线框设置更改事件监听
+		// 给单选框设置更改事件监听
 		cb_setup4_status.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
@@ -40,9 +40,15 @@ public class Setup4Activity extends SetupBaseActivity {
 									//如果有超级管理员,提示防盗保护成功开启
 								Toast.makeText(Setup4Activity.this, "开启防盗保护", 0).show();
 								}else{
-									MyAdmin.openAdmin(Setup4Activity.this);
+									//提示开启
+									MyAdmin.addAdmin(Setup4Activity.this);
 								}
 							}else{
+								
+								//如果管理员权限开着则提示是否关掉
+								if(MyAdmin.isAdmin(Setup4Activity.this)){
+								MyAdmin.removeAdmin(Setup4Activity.this);
+								}
 								Toast.makeText(Setup4Activity.this, "取消防盗保护", 0).show();
 							}
 							//将选中状态保存到配置文件中

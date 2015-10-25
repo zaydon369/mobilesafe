@@ -18,16 +18,17 @@ public class MyAdmin extends DeviceAdminReceiver {
 	 *            上下文
 	 * @return 是否成功开启超级管理员权限
 	 */
-	public static void openAdmin(final Context context) {
+	public static void addAdmin(final Context context) {
 		// 定义一个消息对话框
 		 AlertDialog.Builder builder = new Builder(context);
 		builder.setTitle("管理员权限提醒:");
-		builder.setMessage("是否去设置管理员权限");
+		builder.setMessage("是否去激活管理员权限");
 		//点击确定按钮,弹出设置对话框
-		builder.setPositiveButton("去设置", new OnClickListener() {
+		builder.setPositiveButton("去激活", new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+				//DevicePolicyManager.
 				intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
 						new ComponentName(context, MyAdmin.class));
 				context.startActivity(intent);
@@ -39,8 +40,29 @@ public class MyAdmin extends DeviceAdminReceiver {
 		
 
 	}
-
-	//
+	/**
+	 * 移除管理员权限
+	 * @param context 上下文
+	 */
+	public static void removeAdmin(final Context context) {
+		// 定义一个消息对话框
+				 AlertDialog.Builder builder = new Builder(context);
+				builder.setTitle("管理员权限提醒:");
+				builder.setMessage("是否移除管理员权限");
+				//点击确定按钮,弹出设置对话框
+				builder.setPositiveButton("立刻移除", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						//移除管理员权限
+						DevicePolicyManager dpm = (DevicePolicyManager) context.getSystemService(context.DEVICE_POLICY_SERVICE);
+						ComponentName who = new ComponentName(context, MyAdmin.class);
+						dpm.removeActiveAdmin(who);
+					}
+				});
+				builder.setNegativeButton("下次吧", null);
+				builder.show();
+		
+	}
 	/**
 	 * 判断当前程序是否有管理员权限
 	 * 

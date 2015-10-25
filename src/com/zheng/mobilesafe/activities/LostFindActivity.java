@@ -56,12 +56,16 @@ public class LostFindActivity extends Activity {
 			edit.putBoolean("protecting", false);
 			edit.commit();
 			iv_lostfind_status.setImageResource(R.drawable.unlock);
+			//如果管理员权限开着则提示是否关掉
+			if(MyAdmin.isAdmin(LostFindActivity.this)){
+			MyAdmin.removeAdmin(LostFindActivity.this);
+			}
 			Toast.makeText(LostFindActivity.this, "关闭防盗保护", 0).show();
 
 		} else {// 如果当前状态关闭,点击则开启
 			if (!MyAdmin.isAdmin(LostFindActivity.this)) {
 				// 如果没有管理员权限提示激活
-				MyAdmin.openAdmin(LostFindActivity.this);
+				MyAdmin.addAdmin(LostFindActivity.this);
 			}
 			Editor edit = sp.edit();
 			edit.putBoolean("protecting", true);
