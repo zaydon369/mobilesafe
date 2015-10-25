@@ -12,11 +12,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BIND_DEVICE_ADMIN"/>
 
     <application
         android:allowBackup="true"
@@ -53,21 +54,35 @@
         </activity>
         <!-- 开机启动 -->
         <receiver android:name="com.zheng.mobilesafe.ui.receiver.BootCompleteReceiver" >
-            <intent-filter >
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <!-- 自动截取短信指令 -->
-        <receiver 
-            android:name="com.zheng.mobilesafe.ui.receiver.SmsReceiver"
-            >
-            <intent-filter android:priority="1000">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+        <receiver android:name="com.zheng.mobilesafe.ui.receiver.SmsReceiver" >
+            <intent-filter android:priority="1000" >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-       <service 
-           android:name="com.zheng.mobilesafe.service.LocationService"
-           ></service>
+        <!-- 超级管理员权限 -->
+        <receiver
+            android:name="com.zheng.mobilesafe.ui.receiver.MyAdmin"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" 
+            android:label="@string/sample_device_admin"
+            android:description="@string/sample_device_admin_description"
+            >
+            <meta-data 
+                 android:name="android.app.device_admin"
+                 android:resource="@xml/device_admin_sample"/>
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 获取位置服务 -->
+        <service android:name="com.zheng.mobilesafe.service.LocationService" >
+        </service>
     </application>
 
 </manifest>

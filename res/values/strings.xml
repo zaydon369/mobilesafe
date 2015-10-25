@@ -4,5 +4,6 @@
     <string name="app_name">手机卫士</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="sample_device_admin">手机卫士管理员</string>
+    <string name="sample_device_admin_description">要使用短信锁屏、销毁数据等功能必须开启管理员权限</string>
 </resources>
