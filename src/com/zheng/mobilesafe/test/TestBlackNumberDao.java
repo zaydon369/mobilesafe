@@ -2,9 +2,9 @@ package com.zheng.mobilesafe.test;
 
 import java.util.Random;
 
-import com.zheng.mobilesafe.db.BlackNumberDao;
-
 import android.test.AndroidTestCase;
+
+import com.zheng.mobilesafe.db.dao.BlackNumberDao;
 
 public class TestBlackNumberDao extends AndroidTestCase {
 /**

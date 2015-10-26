@@ -1,9 +1,11 @@
-package com.zheng.mobilesafe.db;
+package com.zheng.mobilesafe.db.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.zheng.mobilesafe.db.BlackNumberDBOpenHelper;
 
 /**
  * 黑名单管理的DAO

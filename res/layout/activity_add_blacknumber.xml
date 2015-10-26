@@ -19,6 +19,7 @@
             android:text="电话:" />
 
         <EditText
+            android:id="@+id/et_addblack_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:phoneNumber="true"
