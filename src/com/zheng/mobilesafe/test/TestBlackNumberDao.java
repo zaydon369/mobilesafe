@@ -40,4 +40,11 @@ public class TestBlackNumberDao extends AndroidTestCase {
 		BlackNumberDao dao=new BlackNumberDao(getContext());
 		dao.delete("13500000000");
 	}
+	/**
+	 * 查询所有数据
+	 */
+	public void findAll(){
+		BlackNumberDao dao=new BlackNumberDao(getContext());
+		System.out.println(dao.findAll());
+	}
 }
