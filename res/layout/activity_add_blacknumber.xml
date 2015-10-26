@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:phoneNumber="true"
+            android:background="@drawable/edittext_selector"
             android:hint="不能为空" />
     </LinearLayout>
 
