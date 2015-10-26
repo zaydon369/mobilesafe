@@ -52,6 +52,9 @@
         </activity>
         <activity android:name="com.zheng.mobilesafe.activities.SelectContactActivity" >
         </activity>
+        <activity 
+            android:name="com.zheng.mobilesafe.activities.CallSmsSafeActivity"
+            ></activity>
         <!-- 开机启动 -->
         <receiver android:name="com.zheng.mobilesafe.ui.receiver.BootCompleteReceiver" >
             <intent-filter>

@@ -90,6 +90,8 @@ public class HomeActivity extends Activity {
 					break;
 
 				case 1:// "…ß»≈¿πΩÿ"
+					Intent intent=new Intent (HomeActivity.this,CallSmsSafeActivity.class);
+					startActivity(intent);
 
 					break;
 				case 2:// "»Ìº˛π‹º“"
