@@ -18,7 +18,7 @@ public class BlackNumberDao {
 	 * 
 	 * @param context
 	 */
-	BlackNumberDao(Context context) {
+	public BlackNumberDao(Context context) {
 		helper = new BlackNumberDBOpenHelper(context);
 
 	}
@@ -29,7 +29,7 @@ public class BlackNumberDao {
 	 * @param phone
 	 *            电话
 	 * @param mode
-	 *            模式
+	 *            模式,1电话拦截,2短信拦截,3全部拦截
 	 * @return 是否添加成功
 	 */
 	public boolean add(String phone, String mode) {
@@ -92,14 +92,15 @@ public class BlackNumberDao {
 	 */
 
 	public String find(String phone) {
-		String mode = null;
+		String mode = "";
 		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor cursor = db.query("blacknumber", new String[] { "mode" },
 				"phone=?", new String[] { phone }, null, null, null);
-		db.close();
+		
 		if (cursor.moveToNext()) {
 			mode = cursor.getString(0);
 		}
+		db.close();
 		cursor.close();
 		return mode;
 	}
