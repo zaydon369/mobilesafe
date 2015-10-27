@@ -45,6 +45,6 @@ public class TestBlackNumberDao extends AndroidTestCase {
 	 */
 	public void findAll(){
 		BlackNumberDao dao=new BlackNumberDao(getContext());
-		System.out.println(dao.findAll());
+		System.out.println("全部集合:"+dao.findAll());
 	}
 }
