@@ -10,25 +10,36 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class SettingActivity extends Activity {
-	//贡献参数,用于存储配置文件
+	//共享参数,用于存储配置文件
 	private SharedPreferences sp;
-	//定义布局控件
+	//定义自动更新布局控件
 	private SwitchImageView iv_setting_update;
-	RelativeLayout rl_setting_update;
+	private RelativeLayout rl_setting_update;
+	//定义拦截骚扰布局控件
+	private SwitchImageView iv_setting_callsmssafe;
+	private RelativeLayout rl_setting_callsmssafe;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
 		//初始化配置文件
 		sp=getSharedPreferences("config", MODE_PRIVATE);
-		//初始化控件
+		/*初始化自动更新控件:图片,布局*/
 		iv_setting_update=(SwitchImageView) findViewById(R.id.iv_setting_update);
-		//设置图片的选择状态
-		iv_setting_update.setSwitchStatus(sp.getBoolean("update", true));
 		rl_setting_update=(RelativeLayout) findViewById(R.id.rl_setting_update);
-		//给相对布局设置点击事件
+		/*初始化拦截骚扰控件:图片,布局*/
+		iv_setting_callsmssafe=(SwitchImageView) findViewById(R.id.iv_setting_callsmssafe);
+		rl_setting_callsmssafe=(RelativeLayout) findViewById(R.id.rl_setting_callsmssafe);
+		/*设置自动更新图片的选择状态*/
+		iv_setting_update.setSwitchStatus(sp.getBoolean("update", true));
+		
+		/*设置拦截骚扰图片的选择状态*///因为是服务进程,判断不能简单根据配置文件,这个后期优化
+		iv_setting_callsmssafe.setSwitchStatus(sp.getBoolean("callsmssafe", false));
+		
+		/*给自动更新的相对布局设置点击事件*/
 		rl_setting_update.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -36,13 +47,27 @@ public class SettingActivity extends Activity {
 				Editor editor=sp.edit();
 				editor.putBoolean("update", iv_setting_update.getSwitchStatus());
 				editor.commit();
+				if(iv_setting_update.getSwitchStatus()){
+				Toast.makeText(getApplicationContext(), "自动更新已打开..", 0).show();
+				}else{
+					Toast.makeText(getApplicationContext(), "自动更新已关闭..", 0).show();
+				}
 			}});
-//		//设置图片点击事件,用于更改状态
-//		iv_setting_update.setOnClickListener(new OnClickListener(){
-//			@Override
-//			public void onClick(View v) {
-//				iv_setting_update.changedSwitchStatus();
-//			}});
+
+		/*给骚扰拦截设置对应的点击事件*/
+		rl_setting_callsmssafe.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				//改变图标
+				iv_setting_callsmssafe.changedSwitchStatus();
+				if(iv_setting_callsmssafe.getSwitchStatus()){
+					Toast.makeText(getApplicationContext(), "骚扰拦截已打开..", 0).show();
+				}else{
+					Toast.makeText(getApplicationContext(), "骚扰拦截已关闭..", 0).show();
+				}
+			}
+			
+		});
 		
 	}
 

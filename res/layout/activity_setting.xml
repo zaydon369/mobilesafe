@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dip"
             android:layout_marginTop="3dip"
-            android:text="设置更新内容"
+            android:text="自动更新设置"
             android:textSize="20sp" />
 
         <com.zheng.mobilesafe.ui.SwitchImageView
@@ -38,7 +38,30 @@
             android:layout_marginRight="5dip"
             android:src="@drawable/on" />
     </RelativeLayout>
+ <RelativeLayout
+        android:id="@+id/rl_setting_callsmssafe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/middle_normal"
+        android:gravity="center_horizontal" >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="3dip"
+            android:text="骚扰拦截设置"
+            android:textSize="20sp" />
+
+        <com.zheng.mobilesafe.ui.SwitchImageView
+            android:id="@+id/iv_setting_callsmssafe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="5dip"
+            android:src="@drawable/on" />
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dip"
             android:layout_marginTop="3dip"
-            android:text="设置选项1"
+            android:text="归属地显示设置"
             android:textSize="20sp" />
 
         <com.zheng.mobilesafe.ui.SwitchImageView
@@ -61,7 +84,28 @@
             android:layout_marginRight="5dip"
             android:src="@drawable/on" />
     </RelativeLayout>
+ <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/middle_normal"
+        android:gravity="center_horizontal" >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="3dip"
+            android:text="归属地显示风格"
+            android:textSize="20sp" />
+
+        <com.zheng.mobilesafe.ui.SwitchImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="5dip"
+             />
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dip"
             android:layout_marginTop="3dip"
-            android:text="设置选项2"
+            android:text="程序锁看门狗服务"
             android:textSize="20sp" />
 
         <com.zheng.mobilesafe.ui.SwitchImageView
@@ -84,5 +128,7 @@
             android:layout_marginRight="5dip"
             android:src="@drawable/on" />
     </RelativeLayout>
+ 
+   
 
 </LinearLayout>
