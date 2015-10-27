@@ -1,9 +1,7 @@
 package com.zheng.mobilesafe.activities;
 
-import com.zheng.mobilesafe.R;
-import com.zheng.mobilesafe.ui.SwitchImageView;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -11,6 +9,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.zheng.mobilesafe.R;
+import com.zheng.mobilesafe.service.CallSmsSafeService;
+import com.zheng.mobilesafe.ui.SwitchImageView;
 
 public class SettingActivity extends Activity {
 	//共享参数,用于存储配置文件
@@ -60,9 +62,15 @@ public class SettingActivity extends Activity {
 			public void onClick(View v) {
 				//改变图标
 				iv_setting_callsmssafe.changedSwitchStatus();
+				//创建一个骚扰拦截的服务意图
+				Intent service=new Intent(getApplicationContext(),CallSmsSafeService.class);
 				if(iv_setting_callsmssafe.getSwitchStatus()){
+					//开启服务
+					startService(service);
 					Toast.makeText(getApplicationContext(), "骚扰拦截已打开..", 0).show();
 				}else{
+					//停止服务
+					stopService(service);
 					Toast.makeText(getApplicationContext(), "骚扰拦截已关闭..", 0).show();
 				}
 			}

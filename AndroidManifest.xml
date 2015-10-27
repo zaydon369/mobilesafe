@@ -94,6 +94,10 @@
         <!-- 获取位置服务 -->
         <service android:name="com.zheng.mobilesafe.service.LocationService" >
         </service>
+        <!-- 骚扰拦截 -->
+        <service 
+            android:name="com.zheng.mobilesafe.service.CallSmsSafeService"
+            ></service>
     </application>
 
 </manifest>

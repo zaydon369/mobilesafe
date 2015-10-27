@@ -42,7 +42,7 @@
         android:id="@+id/rl_setting_callsmssafe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/middle_normal"
+        android:background="@drawable/item_setting_middle"
         android:gravity="center_horizontal" >
 
         <TextView
@@ -65,7 +65,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/middle_normal"
+        android:background="@drawable/item_setting_middle"
         android:gravity="center_horizontal" >
 
         <TextView
@@ -87,7 +87,7 @@
  <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/middle_normal"
+        android:background="@drawable/item_setting_middle"
         android:gravity="center_horizontal" >
 
         <TextView
@@ -109,7 +109,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/last_normal"
+        android:background="@drawable/item_setting_last"
         android:gravity="center_horizontal" >
 
         <TextView
