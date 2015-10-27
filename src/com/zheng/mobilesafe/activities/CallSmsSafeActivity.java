@@ -2,15 +2,19 @@ package com.zheng.mobilesafe.activities;
 
 import java.util.List;
 
+import javax.crypto.spec.IvParameterSpec;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zheng.mobilesafe.R;
 import com.zheng.mobilesafe.db.dao.BlackNumberDao;
@@ -38,9 +42,9 @@ public class CallSmsSafeActivity extends Activity {
 		dao = new BlackNumberDao(this);
 		// 得到黑名单集合信息,
 		infos = dao.findAll();
-		if (infos.size() > 0) {
-			lv_callsms_safe.setAdapter(adapter);
-		}
+		lv_callsms_safe.setAdapter(adapter);
+		//长按修改模式
+		lv_callsms_safe.setOnItemLongClickListener(null);
 	}
 
 	class MyAdapter extends BaseAdapter {
@@ -48,11 +52,11 @@ public class CallSmsSafeActivity extends Activity {
 		@Override
 		public int getCount() {
 			ImageView iv_empty = (ImageView) findViewById(R.id.iv_callsms_empty);
-			if(infos.size()>0){
-				//将图片隐藏
+			if (infos.size() > 0) {
+				// 将图片隐藏
 				iv_empty.setVisibility(View.INVISIBLE);
-			}else{
-				//显示
+			} else {
+				// 显示
 				iv_empty.setVisibility(View.VISIBLE);
 			}
 
@@ -71,7 +75,7 @@ public class CallSmsSafeActivity extends Activity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			BlackNumberInfo info = infos.get(position);
+			final BlackNumberInfo info = infos.get(position);
 			// 第一步优化,回收View对象
 			View view;
 			// 第二步优化,将布局对象抽取出来
@@ -84,17 +88,17 @@ public class CallSmsSafeActivity extends Activity {
 						.findViewById(R.id.tv_item_phone);
 				vh.tv_item_mode = (TextView) view
 						.findViewById(R.id.tv_item_mode);
-				vh.iv_item_delete = (ImageView) findViewById(R.id.iv_item_delete);
-				//将子布局放进view中
+				vh.iv_item_delete = (ImageView)view.findViewById(R.id.iv_item_delete);
+				// 将子布局放进view中
 				view.setTag(vh);
 			} else {
 				view = convertView;
-				vh=(ViewHolder) view.getTag();
+				vh = (ViewHolder) view.getTag();
 			}
-			String phone = info.getPhone();
+			final String phone = info.getPhone();
 			vh.tv_item_phone.setText(phone);
 			String mode = info.getMode();
-			//判断模式,转换成字符
+			// 判断模式,转换成字符
 			if ("1".equals(mode)) {
 				vh.tv_item_mode.setText("电话拦截");
 			} else if ("2".equals(mode)) {
@@ -102,6 +106,21 @@ public class CallSmsSafeActivity extends Activity {
 			} else if ("3".equals(mode)) {
 				vh.tv_item_mode.setText("全部拦截");
 			}
+			//给img图片添加删除点击事件
+			vh.iv_item_delete.setOnClickListener(new OnClickListener(){
+				@Override
+				public void onClick(View v) {
+					if(dao.delete(phone)){
+						//更新列表
+						infos.remove(info);
+						adapter.notifyDataSetChanged();
+						Toast.makeText(getApplicationContext(), "删除成功", 0).show();
+					}else{
+						Toast.makeText(getApplicationContext(), "删除失败", 0).show();
+					}
+				}
+				
+			});
 
 			return view;
 		}
