@@ -47,7 +47,15 @@ public class CallSmsSafeActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
+			ImageView iv_empty = (ImageView) findViewById(R.id.iv_callsms_empty);
+			if(infos.size()>0){
+				//½«Í¼Æ¬Òþ²Ø
+				iv_empty.setVisibility(View.INVISIBLE);
+			}else{
+				//ÏÔÊ¾
+				iv_empty.setVisibility(View.VISIBLE);
+			}
+
 			return infos.size();
 		}
 
