@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/text_title"
+        android:text="更新黑名单" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dip" >
+
+        <TextView
+            style="@style/text_title2"
+            android:text="电话:" />
+
+        <EditText
+            android:id="@+id/et_update_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:phoneNumber="true"
+            android:background="@drawable/edittext_selector"
+            android:hint="不能为空" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_margin="10dip"
+        android:layout_weight="1" >
+
+        <TextView
+             android:id="@+id/tv_title_mode"
+            style="@style/text_title2"
+            android:text="拦截模式:" />
+
+        <RadioGroup
+           
+            android:id="@+id/rg_update_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title_mode"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/rb_update_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="电话拦截" />
+
+            <RadioButton
+                android:id="@+id/rb_update_sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="短信拦截" />
+
+            <RadioButton
+                android:id="@+id/rb_update_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全部拦截" />
+        </RadioGroup>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dip"
+            android:layout_weight="1"
+            android:background="@drawable/dg_confirm_selector"
+            android:onClick="save"
+            android:text="保存" />
+
+        <Button
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dip"
+            android:layout_weight="1"
+            android:background="@drawable/dg_cancel_selector"
+            android:onClick="cancel"
+            android:text="取消" />
+    </LinearLayout>
+
+</LinearLayout>

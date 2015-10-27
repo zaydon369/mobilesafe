@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -43,8 +45,27 @@ public class CallSmsSafeActivity extends Activity {
 		// 得到黑名单集合信息,
 		infos = dao.findAll();
 		lv_callsms_safe.setAdapter(adapter);
-		//长按修改模式
-		lv_callsms_safe.setOnItemLongClickListener(null);
+		// 长按修改模式
+		lv_callsms_safe
+				.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+					@Override
+					public boolean onItemLongClick(AdapterView<?> parent,
+							View view, int position, long id) {
+						// 得到当前选中条目的信息,传到更改页面
+						String phone = infos.get(position).getPhone();
+						String mode = infos.get(position).getMode();
+						// 创建意图
+						Intent intent = new Intent(getApplicationContext(),
+								UpdateBlackNumberActivity.class);
+						// 往意图添加数据
+						intent.putExtra("phone", phone);
+						intent.putExtra("mode", mode);
+						intent.putExtra("position", position);
+						startActivityForResult(intent, 1);
+						return true;
+					}
+				});
 	}
 
 	class MyAdapter extends BaseAdapter {
@@ -88,7 +109,8 @@ public class CallSmsSafeActivity extends Activity {
 						.findViewById(R.id.tv_item_phone);
 				vh.tv_item_mode = (TextView) view
 						.findViewById(R.id.tv_item_mode);
-				vh.iv_item_delete = (ImageView)view.findViewById(R.id.iv_item_delete);
+				vh.iv_item_delete = (ImageView) view
+						.findViewById(R.id.iv_item_delete);
 				// 将子布局放进view中
 				view.setTag(vh);
 			} else {
@@ -106,20 +128,22 @@ public class CallSmsSafeActivity extends Activity {
 			} else if ("3".equals(mode)) {
 				vh.tv_item_mode.setText("全部拦截");
 			}
-			//给img图片添加删除点击事件
-			vh.iv_item_delete.setOnClickListener(new OnClickListener(){
+			// 给img图片添加删除点击事件
+			vh.iv_item_delete.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if(dao.delete(phone)){
-						//更新列表
+					if (dao.delete(phone)) {
+						// 更新列表
 						infos.remove(info);
 						adapter.notifyDataSetChanged();
-						Toast.makeText(getApplicationContext(), "删除成功", 0).show();
-					}else{
-						Toast.makeText(getApplicationContext(), "删除失败", 0).show();
+						Toast.makeText(getApplicationContext(), "删除成功", 0)
+								.show();
+					} else {
+						Toast.makeText(getApplicationContext(), "删除失败", 0)
+								.show();
 					}
 				}
-				
+
 			});
 
 			return view;
@@ -148,7 +172,7 @@ public class CallSmsSafeActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (data != null) {
+		if (data != null && resultCode == 0) {
 			// 将传过来的数据,读取,存到list集合
 			BlackNumberInfo info = new BlackNumberInfo();
 			info.setPhone(data.getExtras().getString("phone"));
@@ -157,6 +181,19 @@ public class CallSmsSafeActivity extends Activity {
 			// 通过Adapter刷新listview
 			adapter.notifyDataSetChanged();
 
+		}
+		if (data != null && resultCode == 1) {
+			//根据当前list的下标
+			int position=data.getIntExtra("position", -1);
+			//移除旧的信息
+			infos.remove(position);
+			//添加新的信息
+			BlackNumberInfo info = new BlackNumberInfo();
+			info.setPhone(data.getExtras().getString("newPhone"));
+			info.setMode(data.getExtras().getString("newMode"));
+			infos.add(info);
+			// 通过Adapter刷新listview
+			adapter.notifyDataSetChanged();
 		}
 
 		super.onActivityResult(requestCode, resultCode, data);

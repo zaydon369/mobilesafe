@@ -84,7 +84,7 @@ public class BlackNumberDao {
 		int i = db.update("blacknumber", values, "phone=?",
 				new String[] { phone });
 		db.close();
-		if (1 > 0) {
+		if (i > 0) {
 			// 结果大于0,说明更新成功
 			return true;
 		}
