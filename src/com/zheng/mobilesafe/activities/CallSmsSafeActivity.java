@@ -94,4 +94,22 @@ public class CallSmsSafeActivity extends Activity {
 		Intent intent = new Intent(this, AddBlackNumberActivity.class);
 		startActivityForResult(intent, 0);
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(data!=null){
+			//将传过来的数据,读取,存到list集合
+			BlackNumberInfo info=new BlackNumberInfo();
+			info.setPhone(data.getExtras().getString("phone"));
+			info.setMode(data.getExtras().getString("mode"));
+			infos.add(info);
+			//通过Adapter刷新listview
+			adapter.notifyDataSetChanged();
+			
+		}
+		
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	
 }

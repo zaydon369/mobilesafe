@@ -1,6 +1,7 @@
 package com.zheng.mobilesafe.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.zheng.mobilesafe.R;
-import com.zheng.mobilesafe.db.BlackNumberDBOpenHelper;
 import com.zheng.mobilesafe.db.dao.BlackNumberDao;
 
 public class AddBlackNumberActivity extends Activity {
@@ -54,6 +54,11 @@ public class AddBlackNumberActivity extends Activity {
 			//如果为空就添加
 			if(dao.add(phone, mode)){
 				Toast.makeText(this, "添加成功", 0).show();	
+				//创建一个意图,将数据存到Result里面,传到上一个界面
+				Intent data=new Intent();
+				data.putExtra("phone", phone);
+				data.putExtra("mode", mode);
+				setResult(0, data);
 				finish();
 			}else{
 				Toast.makeText(this, "添加失败", 0).show();
