@@ -4,15 +4,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.telephony.PhoneStateListener;
+import android.telephony.SmsMessage;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -21,11 +24,38 @@ import com.zheng.mobilesafe.db.dao.BlackNumberDao;
 
 public class CallSmsSafeService extends Service {
 
+	/**
+	 * 内部的短信广播接收者,用来监控短信的状态
+	 */
+	class InnerSmsReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.i(TAG, "接收到短信");
+			// 得到短信的内容,判断发件人是否在黑名单内
+			Object[] objs = (Object[]) intent.getExtras().get("pdus");
+			for (Object obj : objs) {
+				SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) obj);
+				//得到短信发件人
+				String sender = smsMessage.getOriginatingAddress();
+				//到系统查询看发件人在黑名单中是否在模式2或3
+				String mode=dao.find(sender);
+				if("2".equals(mode)||"3".equals(mode)){
+					//如在的话
+					Log.i(TAG,"发现黑名单短信,拦截");
+					abortBroadcast();
+				}
+			}
+		}
+
+	}
+
 	private static final String TAG = "CallSmsSafeService";
 	private BlackNumberDao dao;
 	// 电话服务的监听
 	MyListener listener;
 	TelephonyManager tm;
+	// 短信服务
+	InnerSmsReceiver receiver;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -35,6 +65,13 @@ public class CallSmsSafeService extends Service {
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "骚扰拦截服务已开启");
+		// 开启短信拦截服务
+
+		receiver = new InnerSmsReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.provider.Telephony.SMS_RECEIVED");
+		filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+		registerReceiver(receiver, filter);
 		// 创建dao
 		dao = new BlackNumberDao(getApplicationContext());
 		// 获得电话管理者
@@ -54,6 +91,9 @@ public class CallSmsSafeService extends Service {
 		super.onDestroy();
 	}
 
+	/**
+	 * 电话状态监听
+	 */
 	class MyListener extends PhoneStateListener {
 
 		@Override
@@ -94,16 +134,18 @@ public class CallSmsSafeService extends Service {
 			final ContentResolver resolver = getContentResolver();
 			final Uri uri = Uri.parse("content://call_log/calls");
 			// 利用内容提供者观察数据库变化
-			resolver.registerContentObserver(uri, true, new ContentObserver(new Handler()) {
+			resolver.registerContentObserver(uri, true, new ContentObserver(
+					new Handler()) {
 				@Override
 				public void onChange(boolean selfChange) {
-					//当内容观察者观察到数据库的内容变化的时候调用的方法.
+					// 当内容观察者观察到数据库的内容变化的时候调用的方法.
 					// 数据库名:contacts2,表名:calls,字段number(号码),type(1,呼进),new(1,新纪录)
-					resolver.delete(uri, "number=? and type='1' and new='1'", new String[]{incomingNumber});
+					resolver.delete(uri, "number=? and type='1' and new='1'",
+							new String[] { incomingNumber });
 					super.onChange(selfChange);
-					
+
 				}
-				
+
 			});
 
 		}

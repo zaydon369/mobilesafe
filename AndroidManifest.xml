@@ -93,6 +93,7 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+      
 
         <!-- 获取位置服务 -->
         <service android:name="com.zheng.mobilesafe.service.LocationService" >
