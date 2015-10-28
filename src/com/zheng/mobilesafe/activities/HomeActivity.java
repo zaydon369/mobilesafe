@@ -110,7 +110,8 @@ public class HomeActivity extends Activity {
 
 					break;
 				case 7:// "常用工具"
-
+					Intent cti=new Intent(getApplicationContext(),CommonToolsActivity.class);
+					startActivity(cti);
 					break;
 				}
 			}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#abcdef"
+        android:gravity="center"
+        android:padding="10dip"
+        android:text="常用工具"
+        android:textSize="30sp" />
+
+    <RelativeLayout
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/item_setting_first"
+        android:gravity="center_horizontal" >
+
+        <TextView
+            style="@style/text_title2"
+            android:text="号码归属地查询" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_setting_middle"
+        android:gravity="center_horizontal" >
+
+        <TextView
+             style="@style/text_title2"
+            android:text="短信备份" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_setting_middle"
+        android:gravity="center_horizontal" >
+
+        <TextView
+            style="@style/text_title2"
+            android:text="短信还原" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_setting_last"
+        android:gravity="center_horizontal" >
+
+        <TextView
+           style="@style/text_title2"
+            android:text="程序锁"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
