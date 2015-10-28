@@ -1,6 +1,7 @@
 package com.zheng.mobilesafe.activities;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -18,7 +19,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -89,7 +89,37 @@ public class SplashActivity extends Activity {
 				};
 			}.start();
 		}
-
+		//拷贝电话号码归属地数据库
+		copyAddressDB();
+	}
+	/**
+	 * 拷贝电话号码地址数据库
+	 */
+	private void copyAddressDB() {
+		File file = new File(getFilesDir(), "address.db");
+		if (file.exists() && file.length() > 0) {
+			Log.i(TAG, "数据库存在,无需拷贝");
+		} else {
+			new Thread() {
+				public void run() {
+					// 把asset资产目录里面的数据库文件(在apk里面的)拷贝到手机系统里面
+					try {
+						InputStream is = getAssets().open("address.db");
+						File file = new File(getFilesDir(), "address.db");
+						FileOutputStream fos = new FileOutputStream(file);
+						byte[] buffer = new byte[1024];
+						int len = -1;
+						while ((len = is.read(buffer)) != -1) {
+							fos.write(buffer, 0, len);
+						}
+						fos.close();
+						is.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				};
+			}.start();
+		}
 	}
 
 	// 定义Message,用于子线程和主线程间的数据传递
