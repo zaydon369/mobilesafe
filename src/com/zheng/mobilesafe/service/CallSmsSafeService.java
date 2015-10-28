@@ -1,12 +1,18 @@
 package com.zheng.mobilesafe.service;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.android.internal.telephony.ITelephony;
 import com.zheng.mobilesafe.db.dao.BlackNumberDao;
 
 public class CallSmsSafeService extends Service {
@@ -55,6 +61,8 @@ public class CallSmsSafeService extends Service {
 				String mode = dao.find(incomingNumber);
 				// 判断拦截模式,如果是1或者3说明是电话拦截
 				if("1".equals(mode)||"3".equals(mode)){
+					//挂断电话
+					endCall();
 					Log.i(TAG, "挂断电话");
 				}
 
@@ -66,6 +74,37 @@ public class CallSmsSafeService extends Service {
 			}
 
 			super.onCallStateChanged(state, incomingNumber);
+		}
+		/**
+		 * 挂断电话的方法
+		 */
+		private void endCall() {
+			
+			try {
+				//通过反射得到系统隐藏的挂断电话的方法
+				Class clazz=Class.forName("android.os.ServiceManager");
+				//通过字节码文件得到隐藏的方法
+				Method method=clazz.getDeclaredMethod("getService", String.class);
+				method.setAccessible(true);
+				//调用得到的隐藏方法.得到getService(TELEPHONY_SERVICE);
+				IBinder iBinder = (IBinder) method.invoke(null, Context.TELEPHONY_SERVICE);
+				//
+				ITelephony iTelephony = ITelephony.Stub.asInterface(iBinder);
+				
+				iTelephony.endCall();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
