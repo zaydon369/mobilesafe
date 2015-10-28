@@ -36,6 +36,7 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.zheng.mobilesafe.R;
 import com.zheng.mobilesafe.activities.utils.PackageInfoUtils;
 import com.zheng.mobilesafe.activities.utils.StreamTools;
+import com.zheng.mobilesafe.service.CallSmsSafeService;
 
 public class SplashActivity extends Activity {
 	// 设置TAG为当前activity的类名,方便查看log
@@ -50,12 +51,13 @@ public class SplashActivity extends Activity {
 	private String downloadpath;
 	// 定义下载进度条
 	ProgressDialog pd;
-	//设置开始访问服务器的系统时间(用于控制停留时间)
+	// 设置开始访问服务器的系统时间(用于控制停留时间)
 	private long startTime;
-	//设置准备进入UI的系统时间(用于控制停留时间)
+	// 设置准备进入UI的系统时间(用于控制停留时间)
 	private long endTime;
-	//共享参数,设置配置文件
+	// 共享参数,设置配置文件
 	private SharedPreferences sp;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,22 +68,30 @@ public class SplashActivity extends Activity {
 		String version = PackageInfoUtils.getPackageVersion(this);
 		// 把版本号显示到splash中
 		tv_splash_version.setText("版本:" + version);
-		//获取配置文件,判断是否应该检测更新
-		sp=getSharedPreferences("config", MODE_PRIVATE);
-		boolean update=sp.getBoolean("update", true);
-		if(update){//如果需要进行更新则执行更新代码
-		// 开启子线程获取服务器的最新版本
-		new Thread(new CheckVersionTack()).start();
-		}else{//否则睡眠2秒进入homeUI
-			new Thread(){
+		// 获取配置文件,判断是否应该检测更新
+		sp = getSharedPreferences("config", MODE_PRIVATE);
+		boolean update = sp.getBoolean("update", true);
+		// 获得骚扰拦截是否打开,如果打开则去开启对应的服务
+		if (sp.getBoolean("callsmssafe", false)) {
+			// 创建一个骚扰拦截的服务意图
+			Intent service = new Intent(getApplicationContext(),
+					CallSmsSafeService.class);
+			startService(service);
+		}
+		if (update) {// 如果需要进行更新则执行更新代码
+			// 开启子线程获取服务器的最新版本
+			new Thread(new CheckVersionTack()).start();
+		} else {// 否则睡眠2秒进入homeUI
+			new Thread() {
 				public void run() {
 					SystemClock.sleep(1500);
 					loadMainUI();
 				};
 			}.start();
 		}
-		
+
 	}
+
 	// 定义Message,用于子线程和主线程间的数据传递
 	private Message msg = Message.obtain();
 	// 使用handler接收子线程传递的消息,进行对应的UI更改
@@ -106,6 +116,7 @@ public class SplashActivity extends Activity {
 		}
 
 	};
+
 	/**
 	 * 显示升级提示框
 	 * 
@@ -114,7 +125,7 @@ public class SplashActivity extends Activity {
 	 */
 	protected void showUpdateDialog(String dest) {
 		AlertDialog.Builder builder = new Builder(this);
-		//设置只能点击确定或者取消按钮
+		// 设置只能点击确定或者取消按钮
 		builder.setCancelable(false);
 		// 设置标题
 		builder.setTitle("升级提醒");
@@ -155,6 +166,7 @@ public class SplashActivity extends Activity {
 									pd.show();
 									super.onLoading(total, current, isUploading);
 								}
+
 								/**
 								 * 下载失败
 								 */
@@ -168,6 +180,7 @@ public class SplashActivity extends Activity {
 											"文件下载失败", 0).show();
 									loadMainUI();
 								}
+
 								/**
 								 * 下载成功
 								 */
@@ -196,7 +209,7 @@ public class SplashActivity extends Activity {
 									intent.setDataAndType(
 											Uri.fromFile(fileInfo.result),
 											"application/vnd.android.package-archive");
-									//开始提示替换安装
+									// 开始提示替换安装
 									startActivity(intent);
 								}
 							});
@@ -218,16 +231,14 @@ public class SplashActivity extends Activity {
 		builder.show();
 	}
 
-
-
 	/**
 	 * 获取服务器的最新版本号
 	 */
 	private class CheckVersionTack implements Runnable {
 		@Override
 		public void run() {
-			//定义开始计时时间
-			startTime=SystemClock.uptimeMillis();
+			// 定义开始计时时间
+			startTime = SystemClock.uptimeMillis();
 			// 通过资源文件获取url路径
 			String path = getResources().getString(R.string.url);
 			try {
@@ -238,7 +249,7 @@ public class SplashActivity extends Activity {
 				// 设置请求方式为GET
 				conn.setRequestMethod("GET");
 				// 设置访问超时时间2秒
-				//连接超时时间..
+				// 连接超时时间..
 				conn.setConnectTimeout(2000);
 				// 得到返回码
 				int code = conn.getResponseCode();
@@ -276,7 +287,7 @@ public class SplashActivity extends Activity {
 					msg.obj = "000";
 					Log.i(TAG, "连接返回码不是200");
 				}
-			//	 Log.i(TAG, "连接超时...");
+				// Log.i(TAG, "连接超时...");
 			} catch (MalformedURLException e) {
 
 				e.printStackTrace();
@@ -295,24 +306,25 @@ public class SplashActivity extends Activity {
 				e.printStackTrace();
 				msg.what = ERROR;
 				msg.obj = "808";
-				
+
 				Log.i(TAG, "json解析错误!!");
-			}finally{
-				//定义进入UIhome的时间
-				endTime=SystemClock.uptimeMillis();
-				Log.i(TAG, "开始时间"+startTime+"结束时间:"+endTime);
-				Log.i(TAG,"耗时:"+(endTime-startTime));
-				if((endTime-startTime)<2000){
-					
-				SystemClock.sleep(2000-(endTime-startTime));
-				
+			} finally {
+				// 定义进入UIhome的时间
+				endTime = SystemClock.uptimeMillis();
+				Log.i(TAG, "开始时间" + startTime + "结束时间:" + endTime);
+				Log.i(TAG, "耗时:" + (endTime - startTime));
+				if ((endTime - startTime) < 2000) {
+
+					SystemClock.sleep(2000 - (endTime - startTime));
+
 				}
-				//统一在finally发送消息,避免重复发送
+				// 统一在finally发送消息,避免重复发送
 				handler.sendMessage(msg);
 			}
 		}
 
 	}
+
 	/**
 	 * 加载主UI
 	 */
