@@ -10,7 +10,7 @@ public class AddressDBDao {
 		String path = context.getFilesDir() + "/address.db";
 		SQLiteDatabase db = SQLiteDatabase.openDatabase(path, null,
 				SQLiteDatabase.OPEN_READONLY);
-		String location="";
+		String location="Î´ÖªºÅÂë";
 		Cursor cursor = db
 				.rawQuery("select location from data2 where id = (select outkey from data1 where id = ?)",
 						new String[] { number.substring(0, 7) });
