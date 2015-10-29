@@ -103,6 +103,7 @@
         <service 
             android:name="com.zheng.mobilesafe.service.CallSmsSafeService"
             ></service>
+        <service android:name="com.zheng.mobilesafe.service.ShowAddressService"></service>
     </application>
 
 </manifest>

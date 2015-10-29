@@ -70,7 +70,7 @@ public class SplashActivity extends Activity {
 		tv_splash_version.setText("版本:" + version);
 		// 获取配置文件,判断是否应该检测更新
 		sp = getSharedPreferences("config", MODE_PRIVATE);
-		boolean update = sp.getBoolean("update", true);
+		boolean update = sp.getBoolean("update", false);
 		// 获得骚扰拦截是否打开,如果打开则去开启对应的服务
 		if (sp.getBoolean("callsmssafe", false)) {
 			// 创建一个骚扰拦截的服务意图
