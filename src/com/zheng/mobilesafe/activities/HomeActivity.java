@@ -95,7 +95,8 @@ public class HomeActivity extends Activity {
 
 					break;
 				case 2:// "软件管家"
-
+						Intent softIntent=new Intent(getApplicationContext(),AppManagerActivity.class);
+						startActivity(softIntent);
 					break;
 				case 3:// "进程管理"
 

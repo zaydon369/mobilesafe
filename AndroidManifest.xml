@@ -69,6 +69,7 @@
             android:name="com.zheng.mobilesafe.activities.UpdateBlackNumberActivity"
             ></activity>
         <activity android:name="com.zheng.mobilesafe.activities.CommonToolsActivity"></activity>
+        <activity android:name="com.zheng.mobilesafe.activities.AppManagerActivity"></activity>
         <!-- 开机启动 -->
         <receiver android:name="com.zheng.mobilesafe.ui.receiver.BootCompleteReceiver" >
             <intent-filter>
