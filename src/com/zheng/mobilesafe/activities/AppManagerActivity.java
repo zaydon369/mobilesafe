@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.format.Formatter;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.zheng.mobilesafe.R;
@@ -23,8 +26,13 @@ public class AppManagerActivity extends Activity {
 	TextView tv_appmanager_sdcard;
 	// 安装应用程序信息显示
 	ListView lv_appmanager_app;
-	ArrayList<AppInfo> newAppInfos ;
+	
 	LinearLayout ll_loading;
+	//popup点击显示app更多操作
+	PopupWindow popup;
+	//app信息数组
+	ArrayList<AppInfo> newAppInfos;
+	ArrayList<AppInfo> userAppInfos;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,8 +40,8 @@ public class AppManagerActivity extends Activity {
 
 		tv_appmanager_internal = (TextView) findViewById(R.id.tv_appmanager_internal);
 		tv_appmanager_sdcard = (TextView) findViewById(R.id.tv_appmanager_sdcard);
-		ll_loading=(LinearLayout) findViewById(R.id.ll_loading);
-		
+		ll_loading = (LinearLayout) findViewById(R.id.ll_loading);
+
 		// 获取系统内存,给tv设置值
 		Long internal = SystemInfoUtils.getInternalStorageFreeSize();
 		Long sd = SystemInfoUtils.getSDStorageFreeSize();
@@ -45,12 +53,13 @@ public class AppManagerActivity extends Activity {
 		lv_appmanager_app = (ListView) findViewById(R.id.lv_appmanager_app);
 		// 加载listview放在子线程
 		ll_loading.setVisibility(View.VISIBLE);
+		setAppInfoItemClickListener();
 		new Thread() {
 			public void run() {
 				// 得到系统App的安装信息
 				ArrayList<AppInfo> allAppInfos = (ArrayList<AppInfo>) AppInfoProvider
 						.getAllAppInfos(getApplicationContext());
-				ArrayList<AppInfo> userAppInfos = new ArrayList<AppInfo>();
+				 userAppInfos = new ArrayList<AppInfo>();
 
 				userAppInfos.add(new AppInfo());
 				// 系统应用
@@ -69,19 +78,55 @@ public class AppManagerActivity extends Activity {
 				newAppInfos.addAll(userAppInfos);
 
 				newAppInfos.addAll(systemAppInfos);
-				//在子线程里面再弄出一条UI线程
-				runOnUiThread(new Runnable(){
+				// 在子线程里面再弄出一条UI线程
+				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						ll_loading.setVisibility(View.GONE);
 						MyAdapter adapter = new MyAdapter(newAppInfos);
 						lv_appmanager_app.setAdapter(adapter);
-					}});
+					}
+				});
 			};
-		
+
 		}.start();
 
-		
+	}
+
+	/**
+	 * ListView 条目点击事件
+	 */
+	private void setAppInfoItemClickListener() {
+		lv_appmanager_app
+				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						//如果是第一个条目,因为第一个设置为标题,不能显示
+						if(position==0){
+							return;
+						}
+						if(position==(userAppInfos.size())){
+							return;
+						}
+						View contentView = View.inflate(
+								AppManagerActivity.this,
+								R.layout.item_popup_appinfos, null);
+						if(popup!=null){
+							popup.dismiss();
+							popup=null;
+						}
+						popup = new PopupWindow(contentView, -2, -2);
+						int[] location = new int[2];
+						view.getLocationInWindow(location);
+						popup.showAtLocation(parent,
+								Gravity.TOP + Gravity.LEFT, 65, location[1]);
+
+					}
+
+				});
+
 	}
 
 	class MyAdapter extends MyBaseAdapter {
