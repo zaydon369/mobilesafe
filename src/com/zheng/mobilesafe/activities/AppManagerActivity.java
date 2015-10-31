@@ -3,10 +3,14 @@ package com.zheng.mobilesafe.activities;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -28,13 +32,14 @@ public class AppManagerActivity extends Activity {
 	TextView tv_appmanager_sdcard;
 	// 安装应用程序信息显示
 	ListView lv_appmanager_app;
-	
+
 	LinearLayout ll_loading;
-	//popup点击显示app更多操作
+	// popup点击显示app更多操作
 	PopupWindow popup;
-	//app信息数组
+	// app信息数组
 	ArrayList<AppInfo> newAppInfos;
 	ArrayList<AppInfo> userAppInfos;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,30 +60,31 @@ public class AppManagerActivity extends Activity {
 		lv_appmanager_app = (ListView) findViewById(R.id.lv_appmanager_app);
 		// 加载listview放在子线程
 		ll_loading.setVisibility(View.VISIBLE);
-		//单个条目点击事件
+		// 单个条目点击事件
 		setAppInfoItemClickListener();
-		//设置listview滚动监听
-		lv_appmanager_app.setOnScrollListener(new OnScrollListener(){
+		// 设置listview滚动监听
+		lv_appmanager_app.setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				//如果有popup窗口就关掉
-				if(popup!=null){
+				// 如果有popup窗口就关掉
+				if (popup != null) {
 					popup.dismiss();
-					popup=null;
+					popup = null;
 				}
 			}
 
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
-				
-			}});
+
+			}
+		});
 		new Thread() {
 			public void run() {
 				// 得到系统App的安装信息
 				ArrayList<AppInfo> allAppInfos = (ArrayList<AppInfo>) AppInfoProvider
 						.getAllAppInfos(getApplicationContext());
-				 userAppInfos = new ArrayList<AppInfo>();
+				userAppInfos = new ArrayList<AppInfo>();
 
 				userAppInfos.add(new AppInfo());
 				// 系统应用
@@ -122,27 +128,36 @@ public class AppManagerActivity extends Activity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						if(popup!=null){
+						if (popup != null) {
 							popup.dismiss();
-							popup=null;
+							popup = null;
 						}
-						//如果是第一个条目,因为第一个设置为标题,不能显示
-						if(position==0){
+						// 如果是第一个条目,因为第一个设置为标题,不能显示
+						if (position == 0) {
 							return;
 						}
-						if(position==(userAppInfos.size())){
+						if (position == (userAppInfos.size())) {
 							return;
 						}
 						View contentView = View.inflate(
 								AppManagerActivity.this,
 								R.layout.item_popup_appinfos, null);
-						
+
 						popup = new PopupWindow(contentView, -2, -2);
 						int[] location = new int[2];
 						view.getLocationInWindow(location);
+						// 设定背景透明
+						popup.setBackgroundDrawable(new ColorDrawable(
+								Color.TRANSPARENT));
 						popup.showAtLocation(parent,
 								Gravity.TOP + Gravity.LEFT, 65, location[1]);
-
+						// 指定缩放动画
+						ScaleAnimation sa = new ScaleAnimation(0.3f, 1.0f,
+								0.3f, 1.0f, Animation.RELATIVE_TO_SELF, 0,
+								Animation.RELATIVE_TO_SELF, 0.5f);
+						//设置动画的时长
+						sa.setDuration(250);
+						contentView.startAnimation(sa);
 					}
 
 				});
@@ -193,17 +208,18 @@ public class AppManagerActivity extends Activity {
 
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onDestroy()
 	 */
 	@Override
 	protected void onDestroy() {
-		if(popup!=null){
+		if (popup != null) {
 			popup.dismiss();
-			popup=null;
+			popup = null;
 		}
 		super.onDestroy();
 	}
-	
 
 }
