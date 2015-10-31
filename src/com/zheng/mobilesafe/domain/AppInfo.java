@@ -11,6 +11,14 @@ public class AppInfo {
 	String appName;
 	/**安装路径*/
 	String apkPath;
+	/**app大小*/
+	long apkSize;
+	public long getApkSize() {
+		return apkSize;
+	}
+	public void setApkSize(long apkSize) {
+		this.apkSize = apkSize;
+	}
 	public String getPackageName() {
 		return packageName;
 	}

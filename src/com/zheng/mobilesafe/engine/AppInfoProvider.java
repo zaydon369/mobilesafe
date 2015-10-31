@@ -1,10 +1,10 @@
 package com.zheng.mobilesafe.engine;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
@@ -25,12 +25,21 @@ public class AppInfoProvider {
 		Drawable icon = info.applicationInfo.loadIcon(pm);//app图标
 		String appName = info.applicationInfo.loadLabel(pm).toString();//app名称
 		String apkPath = info.applicationInfo.sourceDir;//安装路径
+		//添加APP信息
 		AppInfo appInfo=new AppInfo();
 		appInfo.setApkPath(apkPath);
 		appInfo.setAppName(appName);
 		appInfo.setIcon(icon);
 		appInfo.setPackageName(packageName);
+		//通过APP安装的位置大小来判断应用程序的大小
+		File file=new File(appInfo.getApkPath());
+		long apkSize=file.length();
+		
+		appInfo.setApkSize(apkSize);
+		
+		//将APP信息存到list
 		appList.add(appInfo);
+		
 		}
 		
 		

@@ -1,5 +1,6 @@
 package com.zheng.mobilesafe.baseholder;
 
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -31,7 +32,8 @@ public abstract class MyBaseHolder<T> {
 	 * @return
 	 */
 	public View getView() {
-
+		Log.i("MyBaseHolder","getView"+mData.toString());
+		
 		return view;
 	}
 

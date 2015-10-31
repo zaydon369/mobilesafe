@@ -2,6 +2,7 @@ package com.zheng.mobilesafe.baseadapter;
 
 import java.util.ArrayList;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,13 +11,13 @@ import com.zheng.mobilesafe.baseholder.MyBaseHolder;
 
 public abstract class MyBaseAdapter<T> extends BaseAdapter{
 	//因为不知道传进的数据类型,所以用泛型
-	private ArrayList<T> mData;
+	private ArrayList <T> mData;
 	private MyBaseHolder holder;
 	
 	public MyBaseAdapter(ArrayList<T> mData) {
 		this.mData=mData;
 	}
-	private MyBaseAdapter() {}
+//	private MyBaseAdapter() {}
 	@Override
 	public int getCount() {
 		
@@ -45,6 +46,7 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter{
 		}
 		//给holder设置显示数据
 		holder.setmData(mData.get(position));
+		Log.i("getView", position+"");
 		return holder.getView();
 	}
 	protected abstract MyBaseHolder getHolder();
