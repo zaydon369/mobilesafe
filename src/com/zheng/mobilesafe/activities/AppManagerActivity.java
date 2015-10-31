@@ -3,11 +3,11 @@ package com.zheng.mobilesafe.activities;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,7 +23,8 @@ public class AppManagerActivity extends Activity {
 	TextView tv_appmanager_sdcard;
 	// 安装应用程序信息显示
 	ListView lv_appmanager_app;
-
+	ArrayList<AppInfo> newAppInfos ;
+	LinearLayout ll_loading;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,6 +32,8 @@ public class AppManagerActivity extends Activity {
 
 		tv_appmanager_internal = (TextView) findViewById(R.id.tv_appmanager_internal);
 		tv_appmanager_sdcard = (TextView) findViewById(R.id.tv_appmanager_sdcard);
+		ll_loading=(LinearLayout) findViewById(R.id.ll_loading);
+		
 		// 获取系统内存,给tv设置值
 		Long internal = SystemInfoUtils.getInternalStorageFreeSize();
 		Long sd = SystemInfoUtils.getSDStorageFreeSize();
@@ -39,33 +42,46 @@ public class AppManagerActivity extends Activity {
 				+ Formatter.formatFileSize(getApplicationContext(), internal));
 		tv_appmanager_sdcard.setText("SD卡剩余:"
 				+ Formatter.formatFileSize(getApplicationContext(), sd));
-
 		lv_appmanager_app = (ListView) findViewById(R.id.lv_appmanager_app);
-		// 得到系统App的安装信息
-		ArrayList<AppInfo> allAppInfos = (ArrayList<AppInfo>) AppInfoProvider
-				.getAllAppInfos(getApplicationContext());
-		ArrayList<AppInfo> userAppInfos = new ArrayList<AppInfo>();
+		// 加载listview放在子线程
+		ll_loading.setVisibility(View.VISIBLE);
+		new Thread() {
+			public void run() {
+				// 得到系统App的安装信息
+				ArrayList<AppInfo> allAppInfos = (ArrayList<AppInfo>) AppInfoProvider
+						.getAllAppInfos(getApplicationContext());
+				ArrayList<AppInfo> userAppInfos = new ArrayList<AppInfo>();
 
-		userAppInfos.add(new AppInfo());
-		// 系统应用
-		ArrayList<AppInfo> systemAppInfos = new ArrayList<AppInfo>();
-		systemAppInfos.add(new AppInfo());
-		// 遍历所有的应用,判断是否是系统应用
-		for (AppInfo appInfo : allAppInfos) {
-			if (appInfo.isSystemApp()) {
-				systemAppInfos.add(appInfo);
-			} else {
-				userAppInfos.add(appInfo);
-			}
-		}
-		// 将整理后的集合存进新的集合中
-		ArrayList<AppInfo> newAppInfos = new ArrayList<AppInfo>();
-		newAppInfos.addAll(userAppInfos);
+				userAppInfos.add(new AppInfo());
+				// 系统应用
+				ArrayList<AppInfo> systemAppInfos = new ArrayList<AppInfo>();
+				systemAppInfos.add(new AppInfo());
+				// 遍历所有的应用,判断是否是系统应用
+				for (AppInfo appInfo : allAppInfos) {
+					if (appInfo.isSystemApp()) {
+						systemAppInfos.add(appInfo);
+					} else {
+						userAppInfos.add(appInfo);
+					}
+				}
+				// 将整理后的集合存进新的集合中
+				newAppInfos = new ArrayList<AppInfo>();
+				newAppInfos.addAll(userAppInfos);
 
-		newAppInfos.addAll(systemAppInfos);
+				newAppInfos.addAll(systemAppInfos);
+				//在子线程里面再弄出一条UI线程
+				runOnUiThread(new Runnable(){
+					@Override
+					public void run() {
+						ll_loading.setVisibility(View.GONE);
+						MyAdapter adapter = new MyAdapter(newAppInfos);
+						lv_appmanager_app.setAdapter(adapter);
+					}});
+			};
+		
+		}.start();
 
-		MyAdapter adapter = new MyAdapter(newAppInfos);
-		lv_appmanager_app.setAdapter(adapter);
+		
 	}
 
 	class MyAdapter extends MyBaseAdapter {
