@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,7 +55,24 @@ public class AppManagerActivity extends Activity {
 		lv_appmanager_app = (ListView) findViewById(R.id.lv_appmanager_app);
 		// 加载listview放在子线程
 		ll_loading.setVisibility(View.VISIBLE);
+		//单个条目点击事件
 		setAppInfoItemClickListener();
+		//设置listview滚动监听
+		lv_appmanager_app.setOnScrollListener(new OnScrollListener(){
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				//如果有popup窗口就关掉
+				if(popup!=null){
+					popup.dismiss();
+					popup=null;
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+			}});
 		new Thread() {
 			public void run() {
 				// 得到系统App的安装信息
@@ -103,6 +122,10 @@ public class AppManagerActivity extends Activity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						if(popup!=null){
+							popup.dismiss();
+							popup=null;
+						}
 						//如果是第一个条目,因为第一个设置为标题,不能显示
 						if(position==0){
 							return;
@@ -113,10 +136,7 @@ public class AppManagerActivity extends Activity {
 						View contentView = View.inflate(
 								AppManagerActivity.this,
 								R.layout.item_popup_appinfos, null);
-						if(popup!=null){
-							popup.dismiss();
-							popup=null;
-						}
+						
 						popup = new PopupWindow(contentView, -2, -2);
 						int[] location = new int[2];
 						view.getLocationInWindow(location);
@@ -172,5 +192,18 @@ public class AppManagerActivity extends Activity {
 		}
 
 	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onDestroy()
+	 */
+	@Override
+	protected void onDestroy() {
+		if(popup!=null){
+			popup.dismiss();
+			popup=null;
+		}
+		super.onDestroy();
+	}
+	
 
 }
