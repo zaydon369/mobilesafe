@@ -40,6 +40,10 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter{
 		if(convertView!=null){
 			//如果不为空,直接拿出holder
 			holder  = (MyBaseHolder) convertView.getTag();
+			if(holder==null){
+				holder=getHolder();
+			}
+		
 		}else{
 			//将一个新的holder赋值进去
 			holder=getHolder();

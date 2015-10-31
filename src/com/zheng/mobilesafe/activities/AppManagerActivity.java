@@ -3,6 +3,7 @@ package com.zheng.mobilesafe.activities;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.View;
@@ -43,7 +44,27 @@ public class AppManagerActivity extends Activity {
 		// 得到系统App的安装信息
 		ArrayList<AppInfo> allAppInfos = (ArrayList<AppInfo>) AppInfoProvider
 				.getAllAppInfos(getApplicationContext());
-		MyAdapter adapter = new MyAdapter(allAppInfos);
+		ArrayList<AppInfo> userAppInfos = new ArrayList<AppInfo>();
+
+		userAppInfos.add(new AppInfo());
+		// 系统应用
+		ArrayList<AppInfo> systemAppInfos = new ArrayList<AppInfo>();
+		systemAppInfos.add(new AppInfo());
+		// 遍历所有的应用,判断是否是系统应用
+		for (AppInfo appInfo : allAppInfos) {
+			if (appInfo.isSystemApp()) {
+				systemAppInfos.add(appInfo);
+			} else {
+				userAppInfos.add(appInfo);
+			}
+		}
+		// 将整理后的集合存进新的集合中
+		ArrayList<AppInfo> newAppInfos = new ArrayList<AppInfo>();
+		newAppInfos.addAll(userAppInfos);
+
+		newAppInfos.addAll(systemAppInfos);
+
+		MyAdapter adapter = new MyAdapter(newAppInfos);
 		lv_appmanager_app.setAdapter(adapter);
 	}
 
@@ -65,9 +86,10 @@ public class AppManagerActivity extends Activity {
 		ImageView iv_itemapp_icont;
 		TextView tv_itemapp_name;
 		TextView tv_itemapp_size;
+		View view;
 
 		protected View initView() {
-			View view = View.inflate(getApplicationContext(),
+			view = View.inflate(getApplicationContext(),
 					R.layout.item_app_infos, null);
 			iv_itemapp_icont = (ImageView) view
 					.findViewById(R.id.iv_itemapp_icont);
@@ -86,7 +108,6 @@ public class AppManagerActivity extends Activity {
 			tv_itemapp_name.setText(appInfo.getAppName());
 			tv_itemapp_size.setText(Formatter.formatFileSize(
 					getApplicationContext(), appInfo.getApkSize()));
-
 		}
 
 	}
