@@ -99,7 +99,8 @@ public class HomeActivity extends Activity {
 						startActivity(softIntent);
 					break;
 				case 3:// "进程管理"
-
+					Intent processIntent=new Intent(getApplicationContext(),ProcessManagerActivity.class);
+					startActivity(processIntent);
 					break;
 				case 4:// "流量统计"
 
