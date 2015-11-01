@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zheng.mobilesafe.R;
 import com.zheng.mobilesafe.activities.utils.SystemInfoUtils;
@@ -276,7 +278,7 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.ll_item_popup_start:// 启动
-
+			startApplication();
 			break;
 		case R.id.ll_item_popup_share:// 分享
 
@@ -286,6 +288,18 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 			break;
 		}
 
+	}
+	/**
+	 * 开启应用程序
+	 */
+	private void startApplication() {
+		PackageManager pm = getPackageManager();
+		Intent intent = pm.getLaunchIntentForPackage(clickedAppInfo.getPackageName());
+		if(intent!=null){
+			startActivity(intent);
+		}else{
+			Toast.makeText(getApplicationContext(), "该应用无法启动",0).show();
+		}
 	}
 
 	/**
