@@ -3,7 +3,10 @@ package com.zheng.mobilesafe.activities;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -47,8 +50,11 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 	LinearLayout ll_start;
 	LinearLayout ll_share;
 	LinearLayout ll_showinfo;
-//当前选中的APP的信息
+	// 当前选中的APP的信息
 	AppInfo clickedAppInfo;
+	// ListVIew适配器
+	MyAdapter adapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,7 +123,7 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 					@Override
 					public void run() {
 						ll_loading.setVisibility(View.GONE);
-						MyAdapter adapter = new MyAdapter(newAppInfos);
+						adapter = new MyAdapter(newAppInfos);
 						lv_appmanager_app.setAdapter(adapter);
 					}
 				});
@@ -137,7 +143,7 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
-						
+
 						if (popup != null) {
 							popup.dismiss();
 							popup = null;
@@ -149,8 +155,8 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 						if (position == (userAppInfos.size())) {
 							return;
 						}
-						//获取当前选中的app信息,
-						clickedAppInfo=newAppInfos.get(position);
+						// 获取当前选中的app信息,
+						clickedAppInfo = newAppInfos.get(position);
 						// 添加popup悬浮小窗体
 						View contentView = View.inflate(
 								AppManagerActivity.this,
@@ -258,6 +264,12 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 	 */
 	@Override
 	public void onClick(View v) {
+		//点击到就把popup关闭
+		if (popup != null) {
+			popup.dismiss();
+			popup = null;
+		}
+		//判断点击的条目,进行对应操作
 		switch (v.getId()) {
 		case R.id.ll_item_popup_uninstall:// 卸载
 			uninstallApplication();
@@ -280,13 +292,53 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 	 * 卸载应用程序
 	 */
 	private void uninstallApplication() {
-		//创建意图,通过包名卸载
-		Intent intent =new Intent();
+		// 创建传播监听卸载信息
+		AppUninstallReceiver receiver = new AppUninstallReceiver();
+		// 添加意图过滤器
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+		// 设置前缀为package
+		filter.addDataScheme("package");
+		// 注册监听
+		registerReceiver(receiver, filter);
+		// 创建意图,通过包名卸载
+		Intent intent = new Intent();
 		intent.setAction("android.intent.action.DELETE");
 		intent.addCategory("android.intent.category.DEFAULT");
-		intent.setData(Uri.parse("package:"+clickedAppInfo.getPackageName()));
-		System.out.println("包名"+clickedAppInfo.getPackageName());
+		intent.setData(Uri.parse("package:" + clickedAppInfo.getPackageName()));
+		System.out.println("包名" + clickedAppInfo.getPackageName());
 		startActivity(intent);
-		
+
+	}
+
+	/**
+	 * 广播,接收应用程序的卸载信息
+	 */
+	private class AppUninstallReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String data = intent.getData().toString();
+			// 因为得到的包名有前缀
+			String packname = data.replace("package:", "");
+			//AppInfo defaultApp = null;
+			stop:for (AppInfo appInfo : newAppInfos) {
+				// 将卸载的APP从类表中移除
+				if (packname.equals(appInfo.getPackageName())) {
+			//		defaultApp = appInfo;
+					newAppInfos.remove(appInfo);
+					break stop;
+				}
+			}
+			// 更新UI界面
+//			if (defaultApp != null) {
+//				newAppInfos.remove(defaultApp);
+//				
+//			}
+			adapter.notifyDataSetChanged();
+			// 取消注册监听
+			unregisterReceiver(this);
+		}
+
 	}
 }
