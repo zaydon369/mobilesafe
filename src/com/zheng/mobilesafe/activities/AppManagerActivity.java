@@ -281,14 +281,36 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 			startApplication();
 			break;
 		case R.id.ll_item_popup_share:// 分享
-
+			shareApplication();
 			break;
 		case R.id.ll_item_popup_showinfo:// 信息
-
+			showApplicationInfo();
 			break;
 		}
 
 	}
+	/**
+	 * 显示应用程序更多信息
+	 */
+	private void showApplicationInfo() {
+		Intent intent=new Intent();
+		intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+		intent.setData(Uri.parse("package:"+clickedAppInfo.getPackageName()));
+		startActivity(intent);
+		
+	}
+/**
+ * 分享应用程序信息
+ */
+	private void shareApplication() {
+		Intent intent =new Intent();
+		intent.setAction("android.intent.action.SEND");
+		intent.addCategory("android.intent.category.DEFAULT");
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_TEXT, "推荐您使用一款APP:"+clickedAppInfo.getAppName()+",真的很好用哦..");
+		startActivity(intent);
+	}
+
 	/**
 	 * 开启应用程序
 	 */
