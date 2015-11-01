@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
@@ -27,7 +28,7 @@ import com.zheng.mobilesafe.baseholder.MyBaseHolder;
 import com.zheng.mobilesafe.domain.AppInfo;
 import com.zheng.mobilesafe.engine.AppInfoProvider;
 
-public class AppManagerActivity extends Activity {
+public class AppManagerActivity extends Activity implements OnClickListener {
 	TextView tv_appmanager_internal;
 	TextView tv_appmanager_sdcard;
 	// 安装应用程序信息显示
@@ -39,6 +40,11 @@ public class AppManagerActivity extends Activity {
 	// app信息数组
 	ArrayList<AppInfo> newAppInfos;
 	ArrayList<AppInfo> userAppInfos;
+	// popup子控件信息
+	LinearLayout ll_uninstall;
+	LinearLayout ll_start;
+	LinearLayout ll_share;
+	LinearLayout ll_showinfo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +145,25 @@ public class AppManagerActivity extends Activity {
 						if (position == (userAppInfos.size())) {
 							return;
 						}
+						// 添加popup悬浮小窗体
 						View contentView = View.inflate(
 								AppManagerActivity.this,
 								R.layout.item_popup_appinfos, null);
+						// 初始化悬浮窗体的子控件
+						ll_uninstall = (LinearLayout) contentView
+								.findViewById(R.id.ll_item_popup_uninstall);
+						ll_start = (LinearLayout) contentView
+								.findViewById(R.id.ll_item_popup_start);
+						ll_share = (LinearLayout) contentView
+								.findViewById(R.id.ll_item_popup_share);
+						ll_showinfo = (LinearLayout) contentView
+								.findViewById(R.id.ll_item_popup_showinfo);
+						// 给悬浮窗体的子控件设置点击事件
+						ll_uninstall
+								.setOnClickListener(AppManagerActivity.this);
+						ll_start.setOnClickListener(AppManagerActivity.this);
+						ll_share.setOnClickListener(AppManagerActivity.this);
+						ll_showinfo.setOnClickListener(AppManagerActivity.this);
 
 						popup = new PopupWindow(contentView, -2, -2);
 						int[] location = new int[2];
@@ -155,7 +177,7 @@ public class AppManagerActivity extends Activity {
 						ScaleAnimation sa = new ScaleAnimation(0.3f, 1.0f,
 								0.3f, 1.0f, Animation.RELATIVE_TO_SELF, 0,
 								Animation.RELATIVE_TO_SELF, 0.5f);
-						//设置动画的时长
+						// 设置动画的时长
 						sa.setDuration(250);
 						contentView.startAnimation(sa);
 					}
@@ -164,6 +186,7 @@ public class AppManagerActivity extends Activity {
 
 	}
 
+	// 使用holder方法自定义的适配器
 	class MyAdapter extends MyBaseAdapter {
 		// TextView tv;
 
@@ -184,6 +207,7 @@ public class AppManagerActivity extends Activity {
 		TextView tv_itemapp_size;
 		View view;
 
+		// 初始化视图,holder抽取的方法
 		protected View initView() {
 			view = View.inflate(getApplicationContext(),
 					R.layout.item_app_infos, null);
@@ -197,6 +221,7 @@ public class AppManagerActivity extends Activity {
 			return view;
 		}
 
+		// 刷新视图,holder抽取的方法
 		@Override
 		protected void refreshView() {
 			AppInfo appInfo = (AppInfo) getmData();
@@ -220,6 +245,29 @@ public class AppManagerActivity extends Activity {
 			popup = null;
 		}
 		super.onDestroy();
+	}
+
+	/**
+	 * 窗体点击事件
+	 */
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.ll_item_popup_uninstall:// 卸载
+
+			break;
+
+		case R.id.ll_item_popup_start:// 启动
+
+			break;
+		case R.id.ll_item_popup_share:// 分享
+
+			break;
+		case R.id.ll_item_popup_showinfo:// 信息
+
+			break;
+		}
+
 	}
 
 }

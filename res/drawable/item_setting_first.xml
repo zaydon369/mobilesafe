@@ -4,5 +4,4 @@
     <item android:drawable="@drawable/first_pressed" 
         android:state_pressed="true"></item>
     <item android:drawable="@drawable/first_normal"></item>
-
 </selector>
