@@ -3,8 +3,10 @@ package com.zheng.mobilesafe.activities;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.Gravity;
@@ -45,7 +47,8 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 	LinearLayout ll_start;
 	LinearLayout ll_share;
 	LinearLayout ll_showinfo;
-
+//当前选中的APP的信息
+	AppInfo clickedAppInfo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -134,6 +137,7 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						
 						if (popup != null) {
 							popup.dismiss();
 							popup = null;
@@ -145,6 +149,8 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 						if (position == (userAppInfos.size())) {
 							return;
 						}
+						//获取当前选中的app信息,
+						clickedAppInfo=newAppInfos.get(position);
 						// 添加popup悬浮小窗体
 						View contentView = View.inflate(
 								AppManagerActivity.this,
@@ -254,7 +260,7 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.ll_item_popup_uninstall:// 卸载
-
+			uninstallApplication();
 			break;
 
 		case R.id.ll_item_popup_start:// 启动
@@ -270,4 +276,17 @@ public class AppManagerActivity extends Activity implements OnClickListener {
 
 	}
 
+	/**
+	 * 卸载应用程序
+	 */
+	private void uninstallApplication() {
+		//创建意图,通过包名卸载
+		Intent intent =new Intent();
+		intent.setAction("android.intent.action.DELETE");
+		intent.addCategory("android.intent.category.DEFAULT");
+		intent.setData(Uri.parse("package:"+clickedAppInfo.getPackageName()));
+		System.out.println("包名"+clickedAppInfo.getPackageName());
+		startActivity(intent);
+		
+	}
 }
