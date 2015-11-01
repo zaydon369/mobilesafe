@@ -1,6 +1,7 @@
 package com.zheng.mobilesafe.baseadapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.util.Log;
 import android.view.View;
@@ -11,10 +12,10 @@ import com.zheng.mobilesafe.baseholder.MyBaseHolder;
 
 public abstract class MyBaseAdapter<T> extends BaseAdapter{
 	//因为不知道传进的数据类型,所以用泛型
-	private ArrayList <T> mData;
+	private List <T> mData;
 	private MyBaseHolder holder;
 	
-	public MyBaseAdapter(ArrayList<T> mData) {
+	public MyBaseAdapter(List<T> mData) {
 		this.mData=mData;
 	}
 //	private MyBaseAdapter() {}
