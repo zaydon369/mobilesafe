@@ -1,8 +1,10 @@
 package com.zheng.mobilesafe.activities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zheng.mobilesafe.R;
 import com.zheng.mobilesafe.baseadapter.MyBaseAdapter;
@@ -77,7 +80,7 @@ public class ProcessManagerActivity extends Activity {
 												.findViewById(R.id.cb_itemProcess_status);
 										// 将cb设置成bean中的值
 										cb.setChecked(info.isChecked());
-										//点击完后,刷新listview,显示数据
+										// 点击完后,刷新listview,显示数据
 										adapter.notifyDataSetChanged();
 									}
 								});
@@ -158,33 +161,67 @@ public class ProcessManagerActivity extends Activity {
 		}
 
 	}
+
 	/**
-	 * 选择全部进程
+	 * 一键清理选中的进程
+	 * 
 	 * @param view
 	 */
-	public void selectAll(View view){
-		//将list集合遍历一下,将是否选中全部选true,然后刷新适配器
-		//List<ProcessInfo> runningProcessInfos;
-		for(ProcessInfo info :runningProcessInfos){
-			if(info!=null){
-			info.setChecked(true);
+	public void onekeyClear(View view) {
+		// 根据包名,全部删除,删除不掉的也移除列表
+		ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+		ArrayList<ProcessInfo> killedInfos=new ArrayList<ProcessInfo>();
+		//遍历杀死进程
+		for (ProcessInfo info : runningProcessInfos) {
+			if(info.isChecked()){
+				String packageName = info.getPackName();
+				am.killBackgroundProcesses(packageName);
+				//将杀死的进程存到新的集合中
+				killedInfos.add(info);
+			}
+			
+		}
+		//将杀死的进程从集合中移除,并刷新
+		runningProcessInfos.removeAll(killedInfos);
+		int total=0;
+		for (ProcessInfo info : killedInfos) {
+			total+=info.getMemSize();
+		}
+		Toast.makeText(getApplicationContext(), "结束了"+killedInfos.size()+"个进程,释放了"+Formatter.formatFileSize(getApplicationContext(), total)+"内存", 0).show();
+		tv_process_desc.setText("进程数量"
+				+runningProcessInfos.size()+ "个");
+		adapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * 选择全部进程
+	 * 
+	 * @param view
+	 */
+	public void selectAll(View view) {
+		// 将list集合遍历一下,将是否选中全部选true,然后刷新适配器
+		// List<ProcessInfo> runningProcessInfos;
+		for (ProcessInfo info : runningProcessInfos) {
+			if (info != null) {
+				info.setChecked(true);
 			}
 		}
 		adapter.notifyDataSetChanged();
 	}
-	
+
 	/**
 	 * 选择未选中的进程
+	 * 
 	 * @param view
 	 */
-	public void selectOther(View view){
-		//将list集合遍历一下,将是否选中全部取反,然后刷新适配器
-				//List<ProcessInfo> runningProcessInfos;
-				for(ProcessInfo info :runningProcessInfos){
-					if(info!=null){
-					info.setChecked(!info.isChecked());
-					}
-				}
-				adapter.notifyDataSetChanged();
+	public void selectOther(View view) {
+		// 将list集合遍历一下,将是否选中全部取反,然后刷新适配器
+		// List<ProcessInfo> runningProcessInfos;
+		for (ProcessInfo info : runningProcessInfos) {
+			if (info != null) {
+				info.setChecked(!info.isChecked());
+			}
+		}
+		adapter.notifyDataSetChanged();
 	}
 }
