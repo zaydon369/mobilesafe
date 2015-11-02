@@ -47,10 +47,15 @@ public class ProcessInfoProvider {
 			//通过进程名称得到安装程序的信息
 			try {
 				PackageInfo packInfo = pm.getPackageInfo(processName, 0);
+				//图标
 				Drawable appIcon = packInfo.applicationInfo.loadIcon(pm);
 				processInfo.setAppIcon(appIcon);
+				//应用名
 				String appName = packInfo.applicationInfo.loadLabel(pm).toString();
 				processInfo.setAppName(appName);
+				//包名
+				String packName=packInfo.applicationInfo.packageName;
+				processInfo.setPackName(packName);
 				if((packInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM)!=0){
 					//系统进程
 					processInfo.setUserProcess(false);

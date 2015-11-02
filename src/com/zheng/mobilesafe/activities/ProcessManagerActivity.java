@@ -66,7 +66,14 @@ public class ProcessManagerActivity extends Activity {
 											int position, long id) {
 										ProcessInfo info = runningProcessInfos
 												.get(position);
-										// 更改点中的条目对应的check状态,并改变bean属性中的值
+										
+										//如果选中的是应用程序本身的进程则不能被选中
+										String pkn=getPackageName();
+										//System.out.println(info.toString());
+										if(getPackageName().equals(info.getPackName())){
+											return;
+										}
+//										 更改点中的条目对应的check状态,并改变bean属性中的值
 										if (info.isChecked()) {
 											info.setChecked(false);
 										} else {
@@ -203,6 +210,10 @@ public class ProcessManagerActivity extends Activity {
 		// List<ProcessInfo> runningProcessInfos;
 		for (ProcessInfo info : runningProcessInfos) {
 			if (info != null) {
+				//如果选中的是应用程序本身的进程则不能被选中
+				if(getPackageName().equals(info.getPackName())){
+					continue;
+				}
 				info.setChecked(true);
 			}
 		}
@@ -219,6 +230,9 @@ public class ProcessManagerActivity extends Activity {
 		// List<ProcessInfo> runningProcessInfos;
 		for (ProcessInfo info : runningProcessInfos) {
 			if (info != null) {
+				if(getPackageName().equals(info.getPackName())){
+					continue;
+				}
 				info.setChecked(!info.isChecked());
 			}
 		}

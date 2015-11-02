@@ -104,6 +104,15 @@ public class ProcessInfo {
 	public void setUserProcess(boolean userProcess) {
 		this.userProcess = userProcess;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ProcessInfo [checked=" + checked + ", appName=" + appName
+				+ ", packName=" + packName + ", memSize=" + memSize
+				+ ", userProcess=" + userProcess + "]";
+	}
 	
 	
 
