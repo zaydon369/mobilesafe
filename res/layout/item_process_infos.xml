@@ -32,8 +32,11 @@
         android:singleLine="true"
         android:text="占用内存"
         android:textSize="16sp" />
+     <!-- 因为获取焦点会挡住父窗口的点击事件,所以设为false -->
     <CheckBox 
         android:id="@+id/cb_itemProcess_status"
+        android:focusable="false"
+        android:clickable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
