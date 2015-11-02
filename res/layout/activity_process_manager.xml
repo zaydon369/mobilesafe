@@ -49,18 +49,21 @@
         android:orientation="horizontal" >
 
         <Button
+            
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="一键清理" />
 
         <Button
+            android:onClick="selectAll"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="全选" />
 
         <Button
+            android:onClick="selectOther"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"

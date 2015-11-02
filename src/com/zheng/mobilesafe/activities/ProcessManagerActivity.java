@@ -158,4 +158,33 @@ public class ProcessManagerActivity extends Activity {
 		}
 
 	}
+	/**
+	 * 选择全部进程
+	 * @param view
+	 */
+	public void selectAll(View view){
+		//将list集合遍历一下,将是否选中全部选true,然后刷新适配器
+		//List<ProcessInfo> runningProcessInfos;
+		for(ProcessInfo info :runningProcessInfos){
+			if(info!=null){
+			info.setChecked(true);
+			}
+		}
+		adapter.notifyDataSetChanged();
+	}
+	
+	/**
+	 * 选择未选中的进程
+	 * @param view
+	 */
+	public void selectOther(View view){
+		//将list集合遍历一下,将是否选中全部取反,然后刷新适配器
+				//List<ProcessInfo> runningProcessInfos;
+				for(ProcessInfo info :runningProcessInfos){
+					if(info!=null){
+					info.setChecked(!info.isChecked());
+					}
+				}
+				adapter.notifyDataSetChanged();
+	}
 }
