@@ -3,6 +3,8 @@ package com.zheng.mobilesafe.domain;
 import android.graphics.drawable.Drawable;
 
 public class AppInfo {
+	/**APP的UID*/
+	int uid;
 	/**包名*/
 	String packageName;
 	/**图标*/
@@ -57,6 +59,18 @@ public class AppInfo {
 	}
 	
 	
+	/**
+	 * @return the uid
+	 */
+	public int getUid() {
+		return uid;
+	}
+	/**
+	 * @param uid the uid to set
+	 */
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
 	/**
 	 * @return the systemApp
 	 */

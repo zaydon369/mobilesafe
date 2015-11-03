@@ -27,9 +27,12 @@ public class AppInfoProvider {
 			String appName = info.applicationInfo.loadLabel(pm).toString();// app名称
 			String apkPath = info.applicationInfo.sourceDir;// 安装路径
 			int flags = info.applicationInfo.flags;
-
+			//给APP添加Uid信息
+			int uid = info.applicationInfo.uid;
+			
 			// 添加APP信息
 			AppInfo appInfo = new AppInfo();
+			appInfo.setUid(uid);
 			appInfo.setApkPath(apkPath);
 			appInfo.setAppName(appName);
 			appInfo.setIcon(icon);
