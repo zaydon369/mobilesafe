@@ -122,6 +122,7 @@
         </service>
         <service android:name="com.zheng.mobilesafe.service.ShowAddressService" >
         </service>
+        <service android:name="com.zheng.mobilesafe.service.UpdateWidgetService"></service>
     </application>
 
 </manifest>
