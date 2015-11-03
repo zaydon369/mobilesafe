@@ -77,6 +77,9 @@
         </activity>
         <activity android:name="com.zheng.mobilesafe.activities.ProcessManagerActivity" >
         </activity>
+        <activity 
+            android:name="com.zheng.mobilesafe.activities.TrafficManagerActivity"
+            ></activity>
         <!-- 开机启动 -->
         <receiver android:name="com.zheng.mobilesafe.ui.receiver.BootCompleteReceiver" >
             <intent-filter>

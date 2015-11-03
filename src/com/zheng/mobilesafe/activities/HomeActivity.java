@@ -77,6 +77,8 @@ public class HomeActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				
+				Intent intent=null;
 				switch (position) {
 				case 0:// "手机防盗"
 						// 判断是否设置过密码
@@ -90,20 +92,21 @@ public class HomeActivity extends Activity {
 					break;
 
 				case 1:// "骚扰拦截"
-					Intent intent=new Intent (HomeActivity.this,CallSmsSafeActivity.class);
+					 intent=new Intent (HomeActivity.this,CallSmsSafeActivity.class);
 					startActivity(intent);
 
 					break;
 				case 2:// "软件管家"
-						Intent softIntent=new Intent(getApplicationContext(),AppManagerActivity.class);
-						startActivity(softIntent);
+						 intent=new Intent(getApplicationContext(),AppManagerActivity.class);
+						startActivity(intent);
 					break;
 				case 3:// "进程管理"
-					Intent processIntent=new Intent(getApplicationContext(),ProcessManagerActivity.class);
-					startActivity(processIntent);
+					 intent=new Intent(getApplicationContext(),ProcessManagerActivity.class);
+					startActivity(intent);
 					break;
 				case 4:// "流量统计"
-
+					 intent=new Intent(getApplicationContext(),TrafficManagerActivity.class);
+						startActivity(intent);
 					break;
 				case 5:// "手机杀毒"
 
