@@ -80,6 +80,8 @@
         <activity 
             android:name="com.zheng.mobilesafe.activities.TrafficManagerActivity"
             ></activity>
+        <activity 
+            android:name="com.zheng.mobilesafe.activities.AntiVirusActivity"></activity>
         <!-- 开机启动 -->
         <receiver android:name="com.zheng.mobilesafe.ui.receiver.BootCompleteReceiver" >
             <intent-filter>

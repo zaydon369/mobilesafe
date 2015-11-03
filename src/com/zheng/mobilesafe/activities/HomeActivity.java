@@ -109,7 +109,8 @@ public class HomeActivity extends Activity {
 						startActivity(intent);
 					break;
 				case 5:// "手机杀毒"
-
+					intent=new Intent(getApplicationContext(),AntiVirusActivity.class);
+					startActivity(intent); 
 					break;
 				case 6:// "系统加速"
 
