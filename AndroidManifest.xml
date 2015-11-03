@@ -113,6 +113,13 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/process_widget_provider" />
         </receiver>
+        <!-- widget一键清理的广播 -->
+        <receiver android:name="com.zheng.mobilesafe.ui.receiver.KillAllReceiver">
+            <intent-filter >
+                <action android:name="com.zheng.mobilesafe.killall"/>
+            </intent-filter>
+            
+        </receiver>
 
         <!-- 获取位置服务 -->
         <service android:name="com.zheng.mobilesafe.service.LocationService" >

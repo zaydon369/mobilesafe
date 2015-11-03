@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -52,6 +53,12 @@ public class UpdateWidgetService extends Service {
 								+ Formatter.formatFileSize(
 										getApplicationContext(),
 										getAvailMemory()));
+				
+				//给按钮添加一键清理的事件
+				Intent intent=new Intent();
+				intent.setAction("com.zheng.mobilesafe.killall");
+				PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				views.setOnClickPendingIntent(R.id.bt_widget_onekeyclear, pendingIntent);
 				System.out.println("刷新内存");
 				//
 				ComponentName provider = new ComponentName(
@@ -73,6 +80,7 @@ public class UpdateWidgetService extends Service {
 		timer.cancel();
 		timer=null;
 		super.onDestroy();
+		System.out.println("停止定时刷新");
 	}
 
 	// 获取剩余内存
