@@ -113,11 +113,12 @@ public class HomeActivity extends Activity {
 					startActivity(intent); 
 					break;
 				case 6:// "系统加速"
-
+					intent=new Intent(getApplicationContext(),SystemOptisActivity.class);
+					startActivity(intent);
 					break;
 				case 7:// "常用工具"
-					Intent cti=new Intent(getApplicationContext(),CommonToolsActivity.class);
-					startActivity(cti);
+					intent=new Intent(getApplicationContext(),CommonToolsActivity.class);
+					startActivity(intent);
 					break;
 				}
 			}

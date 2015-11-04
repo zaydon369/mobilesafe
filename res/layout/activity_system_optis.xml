@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/text_title"
+        android:text="系统加速" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" >
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:clickable="true"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" 
+            >
+
+            <ImageView
+                
+                android:layout_width="30dip"
+                android:layout_height="30dip" 
+                android:src="@drawable/clean_cache_icon_pressed"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FF7bB226"
+                android:text="缓存清理" />
+        </LinearLayout>
+
+        <LinearLayout
+             android:clickable="true"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/dg_cancel_selector"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:src="@drawable/clean_sdcard_icon"
+                android:layout_width="30dip"
+                android:layout_height="30dip" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SD卡清理" />
+        </LinearLayout>
+    </LinearLayout>
+    
+    
+    
+    
+</LinearLayout>
