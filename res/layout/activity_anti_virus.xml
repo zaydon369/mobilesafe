@@ -47,6 +47,7 @@
 
             <ProgressBar
                 android:id="@+id/pb_anti_scan_status"
+                android:progressDrawable="@drawable/progress_horizontal"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="160dip"
                 android:layout_height="wrap_content" />

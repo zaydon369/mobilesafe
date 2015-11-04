@@ -145,3 +145,5 @@
 	通过接口和回调完成文件扫描逻辑
 	完成扫描过程和完成的UI显示,
 	修复之前回调的bug,回调不能使用子线程
+	横竖屏的生命周期android:screenOrientation="portrait"
+	修改进度条样式

@@ -49,6 +49,7 @@ public class AntiVirusActivity extends Activity {
 				iv_scan.clearAnimation();
 				iv_scan.setVisibility(View.GONE);
 				tv_anti_scan_status.setText("扫描完成");
+				//将进度条隐藏
 				pb_anti_scan_status.setVisibility(View.GONE);
 				System.out.println("执行完上面方法后,关闭提示框..");
 				break;
@@ -91,11 +92,13 @@ public class AntiVirusActivity extends Activity {
 							public void fileCounts(int count) {
 								int close = count;
 								System.out.println("文件总数:" + count);
+								//设置进度条的最大值
 								pb_anti_scan_status.setMax(count);
 							}
 
 							@Override
 							public void fileProgress(int pro) {
+								//设置进度条的进度
 								pb_anti_scan_status.setProgress(pro);
 								System.out.println("当前进度:" + pro);
 								try {
