@@ -34,6 +34,7 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.zheng.mobilesafe.R;
+import com.zheng.mobilesafe.activities.utils.CopyFileUtils;
 import com.zheng.mobilesafe.activities.utils.PackageInfoUtils;
 import com.zheng.mobilesafe.activities.utils.StreamTools;
 import com.zheng.mobilesafe.service.CallSmsSafeService;
@@ -89,37 +90,18 @@ public class SplashActivity extends Activity {
 				};
 			}.start();
 		}
-		//拷贝电话号码归属地数据库
-		copyAddressDB();
-	}
-	/**
-	 * 拷贝电话号码地址数据库
-	 */
-	private void copyAddressDB() {
-		File file = new File(getFilesDir(), "address.db");
-		if (file.exists() && file.length() > 0) {
-			Log.i(TAG, "数据库存在,无需拷贝");
-		} else {
-			new Thread() {
-				public void run() {
-					// 把asset资产目录里面的数据库文件(在apk里面的)拷贝到手机系统里面
-					try {
-						InputStream is = getAssets().open("address.db");
-						File file = new File(getFilesDir(), "address.db");
-						FileOutputStream fos = new FileOutputStream(file);
-						byte[] buffer = new byte[1024];
-						int len = -1;
-						while ((len = is.read(buffer)) != -1) {
-							fos.write(buffer, 0, len);
-						}
-						fos.close();
-						is.close();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				};
-			}.start();
-		}
+		// 开子线程拷贝数据库
+		new Thread() {
+			public void run() {
+				// 拷贝电话号码归属地数据库
+				CopyFileUtils.copyAssetsFile(getApplicationContext(),
+						"address.db");
+				//拷贝病毒数据库
+				CopyFileUtils.copyAssetsFile(getApplicationContext(),
+						"antivirus.db");
+			};
+		}.start();
+
 	}
 
 	// 定义Message,用于子线程和主线程间的数据传递
@@ -161,7 +143,7 @@ public class SplashActivity extends Activity {
 		builder.setTitle("升级提醒");
 		// 设置内容
 		builder.setMessage(dest);
-		//builder.setMessage(dest);
+		// builder.setMessage(dest);
 		// 选择立即升级,进行下载升级操作
 		builder.setPositiveButton("立即升级", new OnClickListener() {
 			@Override
