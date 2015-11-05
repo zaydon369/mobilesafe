@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <ProgressBar 
-        android:progressDrawable="@drawable/progress_horizontal"
+
+    <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-<TextView 
-      android:layout_width="match_parent"
+        android:progressDrawable="@drawable/progress_horizontal" />
+
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="扫描完毕"
-    />
+        android:text="扫描完毕" />
+
 </LinearLayout>

@@ -9,12 +9,12 @@
         style="@style/text_title"
         android:text="系统加速" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/ll_system_optis_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1" >
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,7 +59,6 @@
 
             <ImageView
                 android:id="@+id/iv_system_optis_sdcar"
-                android:src="@drawable/clean_sdcard_icon"
                 android:layout_width="30dip"
                 android:layout_height="30dip" />
 
