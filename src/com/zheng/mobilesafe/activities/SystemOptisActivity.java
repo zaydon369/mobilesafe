@@ -43,8 +43,20 @@ public class SystemOptisActivity extends FragmentActivity implements
 		ll_system_optis_cache.setOnClickListener(this);
 		ll_system_optis_sdcar.setOnClickListener(this);
 
-		// 设置默认为清除缓存界面
-		getCleanCacheFragment();
+		new Thread(){
+			public void run() {
+				
+				runOnUiThread(new Runnable(){
+
+					@Override
+					public void run() {
+						// 设置默认为清除缓存界面
+						getCleanCacheFragment();
+						
+					}});
+			};
+		}.start();
+		
 
 	}
 
