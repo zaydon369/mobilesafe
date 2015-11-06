@@ -59,6 +59,8 @@
         android:gravity="center_horizontal" >
 
         <TextView
+            android:clickable="true"
+            android:onClick="appClock"
            style="@style/text_title2"
             android:text="程序锁"
             />

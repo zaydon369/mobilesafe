@@ -2,6 +2,7 @@ package com.zheng.mobilesafe.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -44,6 +45,16 @@ public class CommonToolsActivity extends Activity {
 		}.start();
 		
 		
+		
+	}
+	/**
+	 * 程序锁
+	 * @param view
+	 */
+	public  void appClock(View view){
+		//打开程序锁窗口
+		Intent intent=new Intent (this,AppLockActivity.class);
+		startActivity(intent);
 		
 	}
 }
