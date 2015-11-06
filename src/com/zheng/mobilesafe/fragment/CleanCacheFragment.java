@@ -3,7 +3,9 @@ package com.zheng.mobilesafe.fragment;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -36,10 +39,15 @@ public class CleanCacheFragment extends Fragment {
 	private PackageManager pm;
 	List<AppInfo> allAppInfos;
 	Message message;
+	//定义上下文
+	Context mcontext;
 	long cacheSize=0;
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			CacheInfo cacheInfo=new CacheInfo();
+			//打开清理缓存的应用的意图
+			final Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+			intent.addCategory(Intent.CATEGORY_DEFAULT);
 			
 			cacheInfo=(CacheInfo) msg.obj;
 			if(cacheInfo!=null){
@@ -47,16 +55,24 @@ public class CleanCacheFragment extends Fragment {
 			}
 			switch (msg.what) {
 			case FIND_CACHE:
-				TextView tv=new TextView(getActivity());
+				TextView tv=new TextView(mcontext);
 				 cacheSize += cacheInfo.cacheSize;
+				 final String packName=cacheInfo.packName;
 				tv.setText(cacheInfo.appName+"缓存大小:"+Formatter.formatFileSize(getActivity(), cacheInfo.cacheSize));
+				tv.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v) {
+						intent.setData(Uri.parse("package:"+packName));
+						startActivity(intent);
+						
+					}});
 				ll_fragment_cache.addView(tv,0);
 				break;
 			case NOT_CACHE:
 
 				break;
 			case FINISH:
-				tv_fragment_cache.setText("扫描完成,共发现:"+Formatter.formatFileSize(getActivity(), cacheSize)+"缓存");
+				tv_fragment_cache.setText("扫描完成,共发现:"+Formatter.formatFileSize(mcontext, cacheSize)+"缓存");
 				break;
 			
 			}
@@ -78,15 +94,18 @@ public class CleanCacheFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = View.inflate(getActivity(), R.layout.fragment_cache_clean,
+		//获得上下文
+		mcontext=getActivity();
+		View view = View.inflate(mcontext, R.layout.fragment_cache_clean,
 				null);
+	
 		pb_fragment_cache = (ProgressBar) view
 				.findViewById(R.id.pb_fragment_cache);
 		tv_fragment_cache = (TextView) view
 				.findViewById(R.id.tv_fragment_cache);
 		ll_fragment_cache = (LinearLayout) view
 				.findViewById(R.id.ll_fragment_cache);
-		allAppInfos = AppInfoProvider.getAllAppInfos(getActivity());
+		allAppInfos = AppInfoProvider.getAllAppInfos(mcontext);
 
 		return view;
 
@@ -98,11 +117,9 @@ public class CleanCacheFragment extends Fragment {
 		int size = allAppInfos.size();
 		pb_fragment_cache.setMax(size);
 		CacheCallBack cacheCallBack = new CacheCallBack();
-		//将上下文提取出来,防止子线程获取不到上下文
-		Context context=getActivity();
 		for (int i = 0; i < size; i++) {
 			
-			AppCacheUtils.getCache(i, context, allAppInfos.get(i)
+			AppCacheUtils.getCache(i, mcontext, allAppInfos.get(i)
 					.getPackageName(), cacheCallBack);
 			pb_fragment_cache.setProgress(i + 1);
 			SystemClock.sleep(100);
