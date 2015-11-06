@@ -3,6 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+        <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            style="@style/text_title"
+            android:text="清理缓存" />
+
+        <Button
+            android:id="@+id/bt_fragment_cache_clean"
+            android:layout_margin="5dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/dg_confirm_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="一键清理" />
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/pb_fragment_cache"

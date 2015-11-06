@@ -16,9 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zheng.mobilesafe.R;
 import com.zheng.mobilesafe.activities.utils.AppCacheUtils;
@@ -27,15 +29,18 @@ import com.zheng.mobilesafe.domain.AppInfo;
 import com.zheng.mobilesafe.engine.AppInfoProvider;
 
 public class CleanCacheFragment extends Fragment {
+	/**初始化扫描缓存*/
+	private static final int INIT = 0;
 	/** 发现缓存 */
 	public static final int FIND_CACHE = 1;
 	/** 没有缓存 */
-	public static final int NOT_CACHE = 0;
+	public static final int NOT_CACHE = 2;
 	/**扫描完成*/
-	public static final int FINISH=2;
+	public static final int FINISH=3;
 	private TextView tv_fragment_cache;
 	private ProgressBar pb_fragment_cache;
 	private LinearLayout ll_fragment_cache;
+	private Button bt_onekey_clean;
 	private PackageManager pm;
 	List<AppInfo> allAppInfos;
 	Message message;
@@ -44,16 +49,22 @@ public class CleanCacheFragment extends Fragment {
 	long cacheSize=0;
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
-			CacheInfo cacheInfo=new CacheInfo();
+			
 			//打开清理缓存的应用的意图
 			final Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
 			intent.addCategory(Intent.CATEGORY_DEFAULT);
-			
+			//获取缓存对象
+			CacheInfo cacheInfo=new CacheInfo();
 			cacheInfo=(CacheInfo) msg.obj;
+			
 			if(cacheInfo!=null){
 			tv_fragment_cache.setText("正在扫描:"+cacheInfo.appName);
 			}
 			switch (msg.what) {
+			case INIT://初始化,移除所有记录
+				cacheSize=0;//将缓存记录清空
+				ll_fragment_cache.removeAllViews();//之前的item
+				break;
 			case FIND_CACHE:
 				TextView tv=new TextView(mcontext);
 				 cacheSize += cacheInfo.cacheSize;
@@ -73,12 +84,28 @@ public class CleanCacheFragment extends Fragment {
 				break;
 			case FINISH:
 				tv_fragment_cache.setText("扫描完成,共发现:"+Formatter.formatFileSize(mcontext, cacheSize)+"缓存");
+				bt_onekey_clean.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v) {
+						new Thread() {
+							public void run() {
+								//因为是耗时,所以开个子线程
+								AppCacheUtils.cleanAllCache(mcontext, null)	;
+							};
+						}.start();
+						
+						Toast.makeText(mcontext, "已经清除了全部缓存", 0).show();
+						
+					}});
+
 				break;
 			
 			}
 		};
 	};
-
+/**
+ * Fragment可见时就刷新缓存数据
+ */
 	@Override
 	public void onStart() {
 		new Thread() {
@@ -86,8 +113,6 @@ public class CleanCacheFragment extends Fragment {
 			full();
 		};
 	}.start();
-		
-	
 		super.onStart();
 	}
 
@@ -106,14 +131,18 @@ public class CleanCacheFragment extends Fragment {
 		ll_fragment_cache = (LinearLayout) view
 				.findViewById(R.id.ll_fragment_cache);
 		allAppInfos = AppInfoProvider.getAllAppInfos(mcontext);
-
+		bt_onekey_clean = (Button) view.findViewById(R.id.bt_fragment_cache_clean);
 		return view;
 
 	}
 
 	// 得到系统所有的安装包,遍历所有安装包的缓存大小
 	public void full() {
-
+		//开始扫描
+		message = Message.obtain();
+		message.what = INIT;
+		handler.sendMessage(message);
+		//
 		int size = allAppInfos.size();
 		pb_fragment_cache.setMax(size);
 		CacheCallBack cacheCallBack = new CacheCallBack();

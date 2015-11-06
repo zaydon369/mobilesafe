@@ -3,12 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/tv_system_optis_title"
-        style="@style/text_title"
-        android:text="系统加速" />
-
     <FrameLayout
         android:id="@+id/ll_system_optis_fragment"
         android:layout_width="match_parent"
@@ -24,37 +18,34 @@
 
         <LinearLayout
             android:id="@+id/ll_system_optis_cache"
-            android:clickable="true"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:gravity="center"
-            android:orientation="vertical" 
-            >
+            android:orientation="vertical" >
 
             <ImageView
                 android:id="@+id/iv_system_optis_cache"
                 android:layout_width="30dip"
-                android:layout_height="30dip" 
-                
-                />
+                android:layout_height="30dip" />
 
             <TextView
                 android:id="@+id/tv_system_optis_cache"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FF7bB226"
-                android:text="缓存清理" />
+                android:text="缓存清理"
+                android:textColor="#FF7bB226" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_system_optis_sdcar"
-             android:clickable="true"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@drawable/dg_cancel_selector"
+            android:clickable="true"
+            android:gravity="center"
             android:orientation="vertical" >
 
             <ImageView
@@ -69,8 +60,5 @@
                 android:text="SD卡清理" />
         </LinearLayout>
     </LinearLayout>
-    
-    
-    
-    
+
 </LinearLayout>

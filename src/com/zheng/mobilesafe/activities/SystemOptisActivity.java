@@ -20,7 +20,6 @@ public class SystemOptisActivity extends FragmentActivity implements
 	private FrameLayout ll_system_optis_fragment;
 	private LinearLayout ll_system_optis_cache;
 	private LinearLayout ll_system_optis_sdcar;
-	private TextView tv_system_optis_title;
 	private ImageView iv_system_optis_cache;
 	private TextView tv_system_optis_cache;
 	private ImageView iv_system_optis_sdcar;
@@ -32,7 +31,6 @@ public class SystemOptisActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_system_optis);
 		ll_system_optis_cache = (LinearLayout) findViewById(R.id.ll_system_optis_cache);
 		ll_system_optis_sdcar = (LinearLayout) findViewById(R.id.ll_system_optis_sdcar);
-		tv_system_optis_title = (TextView) findViewById(R.id.tv_system_optis_title);
 		ll_system_optis_fragment = (FrameLayout) findViewById(R.id.ll_system_optis_fragment);
 		iv_system_optis_cache = (ImageView) findViewById(R.id.iv_system_optis_cache);
 		tv_system_optis_cache = (TextView) findViewById(R.id.tv_system_optis_cache);
@@ -78,8 +76,6 @@ public class SystemOptisActivity extends FragmentActivity implements
 	 * 跳到清除sd卡的Fragment
 	 */
 	private void getCleanSdCarFragment() {
-		// 更改标题
-		tv_system_optis_title.setText("SD卡清理");
 		// 更改另一个按钮的背景图片和文字颜色
 		ll_system_optis_cache.setBackgroundResource(0);
 		iv_system_optis_cache
@@ -102,8 +98,6 @@ public class SystemOptisActivity extends FragmentActivity implements
 	 * 跳到到清除缓存的Fragment
 	 */
 	private void getCleanCacheFragment() {
-		tv_system_optis_title.setText("缓存清理");
-
 		// 更改另一个按钮的背景图片和文字颜色
 		ll_system_optis_cache
 				.setBackgroundResource(R.drawable.dg_cancel_selector);
