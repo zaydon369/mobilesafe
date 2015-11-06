@@ -20,20 +20,24 @@
             android:orientation="horizontal" >
 
             <TextView
-                android:clickable="true"
+                android:id="@+id/tv_applock_show_unlock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#0f0f00"
+                android:clickable="true"
+                android:onClick="showUnlock"
                 android:padding="5dip"
                 android:text="未加锁"
                 android:textColor="#FFFFFF"
                 android:textSize="15dip" />
 
             <TextView
-                android:clickable="true"
+                android:id="@+id/tv_applock_show_locked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ff00FF"
+                android:clickable="true"
+                android:onClick="showLocked"
                 android:padding="5dip"
                 android:text="已加锁"
                 android:textColor="#FFFFFF"
@@ -46,18 +50,20 @@
         android:layout_height="match_parent" >
 
         <LinearLayout
+            android:id="@+id/ll_applock_unlock"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/tv_applock_unlock_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="未加锁程序:xx个"
                 android:textSize="13dip" />
 
             <ListView
-                android:id="@+id/lv_"
+                android:id="@+id/lv_applock_unlock"
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_weight="1" >
@@ -65,19 +71,21 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="invisible"
+              android:id="@+id/ll_applock_locked"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="invisible" >
 
             <TextView
+                android:id="@+id/tv_applock_locked_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="已加锁程序:xx个"
                 android:textSize="13dip" />
 
             <ListView
-                android:id="@+id/lv_"
+                android:id="@+id/lv_applock_locked"
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_weight="1" >

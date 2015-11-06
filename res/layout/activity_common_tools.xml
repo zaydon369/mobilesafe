@@ -53,14 +53,14 @@
 
     <RelativeLayout
         android:clickable="true"
+         android:onClick="appClock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_setting_last"
         android:gravity="center_horizontal" >
 
         <TextView
-            android:clickable="true"
-            android:onClick="appClock"
+           
            style="@style/text_title2"
             android:text="程序锁"
             />
