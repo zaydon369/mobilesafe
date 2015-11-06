@@ -9,9 +9,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zheng.mobilesafe.R;
@@ -28,11 +31,13 @@ public class AppLockActivity extends Activity {
 	private TextView tv_applock_unlock_count;
 	private TextView tv_applock_locked_count;
 	private List<AppInfo> allAppInfos;
-	private List<AppInfo> lockedAppInfos = new ArrayList<AppInfo>();
+	private List<AppInfo> unlockAppInfos;
+	private List<AppInfo> lockedAppInfos;
 	private TextView tv_applock_show_unlock;
 	private TextView tv_applock_show_locked;
 	private LinearLayout ll_applock_unlock;
 	private LinearLayout ll_applock_locked;
+	private RelativeLayout rl_applock_pro;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,11 @@ public class AppLockActivity extends Activity {
 		tv_applock_show_locked = (TextView) findViewById(R.id.tv_applock_show_locked);
 		ll_applock_unlock = (LinearLayout) findViewById(R.id.ll_applock_unlock);
 		ll_applock_locked = (LinearLayout) findViewById(R.id.ll_applock_locked);
+		rl_applock_pro = (RelativeLayout) findViewById(R.id.rl_applock_pro);
+		
+		lockedAppInfos = new ArrayList<AppInfo>();
+		unlockAppInfos = new ArrayList<AppInfo>();
+		//提示正在加载...
 		// 在子线程初始化数据
 		new Thread() {
 			public void run() {
@@ -58,17 +68,17 @@ public class AppLockActivity extends Activity {
 					// 如果没有界面就过滤掉
 					if (pm.getLaunchIntentForPackage(packageName) == null) {
 						allAppInfos.remove(i);
-						lockedAppInfos.add(allAppInfos.get(i));
 						i--;
 
 					}
-					// TODO 添加测试数据
-
 				}
+				// 剔除没有界面的APP后,将剩余的APP赋值给未加锁
+				unlockAppInfos = allAppInfos;
 				runOnUiThread(new Runnable() {
 
 					@Override
 					public void run() {
+						rl_applock_pro.setVisibility(View.GONE);
 						showUnlock();
 
 					}
@@ -108,11 +118,28 @@ public class AppLockActivity extends Activity {
 		// 显示未加锁
 		ll_applock_unlock.setVisibility(View.VISIBLE);
 		// 把已加锁的隐藏
-				ll_applock_locked.setVisibility(View.INVISIBLE);
+		ll_applock_locked.setVisibility(View.INVISIBLE);
 		// 加载listView
-		UnlockAdaper unlockAdaper = new UnlockAdaper(allAppInfos);
-		tv_applock_unlock_count.setText("未加锁程序共:" + allAppInfos.size() + "个");
+		final UnlockAdaper unlockAdaper = new UnlockAdaper(unlockAppInfos);
+		tv_applock_unlock_count
+				.setText("未加锁程序共:" + unlockAppInfos.size() + "个");
 		lv_applock_unlock.setAdapter(unlockAdaper);
+		// 给条目添加点击事件
+		lv_applock_unlock.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				lockedAppInfos.add(unlockAppInfos.get(position));
+				unlockAppInfos.remove(position);
+				// 修改数据完后,通知适配器更新数据
+				unlockAdaper.notifyDataSetChanged();
+				// 修改标题
+				tv_applock_unlock_count.setText("未加锁程序共:"
+						+ unlockAppInfos.size() + "个");
+			}
+
+		});
 	}
 
 	/**
@@ -127,10 +154,26 @@ public class AppLockActivity extends Activity {
 		// 显示已加锁
 		ll_applock_locked.setVisibility(View.VISIBLE);
 		// 加载listView
-		LockedAdaper lockedAdaper = new LockedAdaper(lockedAppInfos);
+		final LockedAdaper lockedAdaper = new LockedAdaper(lockedAppInfos);
 		tv_applock_locked_count
 				.setText("已加锁程序共:" + lockedAppInfos.size() + "个");
 		lv_applock_locked.setAdapter(lockedAdaper);
+		// 给已加锁的list条目添加点击事件
+		lv_applock_locked.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				unlockAppInfos.add(lockedAppInfos.get(position));
+				lockedAppInfos.remove(position);
+				// 修改数据完后,通知适配器更新数据
+				lockedAdaper.notifyDataSetChanged();
+				// 修改标题
+				tv_applock_locked_count.setText("已加锁程序共:"
+						+ lockedAppInfos.size() + "个");
+			}
+
+		});
 	}
 
 	/**

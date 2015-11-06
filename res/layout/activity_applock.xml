@@ -49,6 +49,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
+        <RelativeLayout
+            android:id="@+id/rl_applock_pro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            >
+
+
+            <ProgressBar
+                android:layout_centerInParent="true"
+                android:layout_width="200dip"
+                android:layout_height="200dip" />
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="25dip"
+                android:text="正在卖力加载中..." />
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/ll_applock_unlock"
             android:layout_width="match_parent"
@@ -59,7 +79,6 @@
                 android:id="@+id/tv_applock_unlock_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="未加锁程序:xx个"
                 android:textSize="13dip" />
 
             <ListView
@@ -71,7 +90,7 @@
         </LinearLayout>
 
         <LinearLayout
-              android:id="@+id/ll_applock_locked"
+            android:id="@+id/ll_applock_locked"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -81,7 +100,6 @@
                 android:id="@+id/tv_applock_locked_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="已加锁程序:xx个"
                 android:textSize="13dip" />
 
             <ListView
