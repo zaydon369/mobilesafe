@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,6 +29,7 @@ public class EnterPasswordActivity extends Activity {
 	private EditText et_enter_password_pwd;
 	private Button bt_enter_password_confirm;
 	private String packageName;
+	private PackageManager pm;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +39,15 @@ public class EnterPasswordActivity extends Activity {
 		tv_enter_password_appname = (TextView) findViewById(R.id.tv_enter_password_appname);
 		et_enter_password_pwd = (EditText) findViewById(R.id.et_enter_password_pwd);
 		bt_enter_password_confirm = (Button) findViewById(R.id.bt_enter_password_confirm);
-
+		pm = getPackageManager();
+		
+	}
+	@Override
+	protected void onStart() {
 		Intent intent = getIntent();
 		packageName = intent.getStringExtra("packageName");
-		System.out.println("意图得到的包名:" + packageName);
-		PackageManager pm = getPackageManager();
+		//System.out.println("意图得到的包名:" + packageName);
+		
 		try {
 			ApplicationInfo applicationInfo = pm.getApplicationInfo(
 					packageName, 0);
@@ -74,5 +80,28 @@ public class EnterPasswordActivity extends Activity {
 
 			}
 		});
+		super.onStart();
 	}
+	/**
+	 * 重写返回键,修改返回为回到桌面,避免看到加锁程序的内容
+	 */
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent();
+		intent.setAction("android.intent.action.MAIN");
+		intent.addCategory("android.intent.category.HOME");
+		intent.addCategory("android.intent.category.DEFAULT");
+		startActivity(intent);
+		finish();
+	}
+	/**
+	 * 在不可见时,将本窗口消掉,避免多个程序同一个图标问题
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		finish();
+		
+	}
+
 }
