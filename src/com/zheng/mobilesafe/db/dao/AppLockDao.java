@@ -6,15 +6,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.zheng.mobilesafe.db.AppLockDBOpenHelper;
 
 public class AppLockDao {
 	private AppLockDBOpenHelper helper;
+	private Context context;
 
 	public AppLockDao(Context context) {
 		helper = new AppLockDBOpenHelper(context);
-
+		this.context = context;
 	}
 
 	/**
@@ -31,6 +33,11 @@ public class AppLockDao {
 		values.put("packname", packName);
 		flag = (db.insert("lockinfo", null, values) > 0);
 		db.close();
+		// 定义一个URI用于标识更改
+		Uri uri = Uri.parse("content://com.zheng.mobilesafe.applockdb");
+		// 内容观察者发送一个更改的通知
+		context.getContentResolver().notifyChange(uri, null);
+
 		return flag;
 	}
 
@@ -64,6 +71,10 @@ public class AppLockDao {
 		SQLiteDatabase db = helper.getWritableDatabase();
 		flag = (db.delete("lockinfo", "packname=?", new String[] { packName }) > 0);
 		db.close();
+		// 定义一个URI用于标识更改
+		Uri uri = Uri.parse("content://com.zheng.mobilesafe.applockdb");
+		// 内容观察者发送一个更改的通知
+		context.getContentResolver().notifyChange(uri, null);
 		return flag;
 	}
 
@@ -72,7 +83,7 @@ public class AppLockDao {
 		SQLiteDatabase db = helper.getReadableDatabase();
 		Cursor cursor = db.query("lockinfo", new String[] { "packname" }, null,
 				null, null, null, null, null);
-		while(cursor.moveToNext()){
+		while (cursor.moveToNext()) {
 			allLockapps.add(cursor.getString(0));
 		}
 		cursor.close();
