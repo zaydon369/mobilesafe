@@ -91,6 +91,10 @@
         <activity 
             android:name="com.zheng.mobilesafe.activities.AppLockActivity"
             ></activity>
+        <activity android:name="com.zheng.mobilesafe.activities.EnterPasswordActivity"
+            android:launchMode="singleInstance">
+            
+        </activity>
         <!-- 开机启动 -->
         <receiver android:name="com.zheng.mobilesafe.ui.receiver.BootCompleteReceiver" >
             <intent-filter>

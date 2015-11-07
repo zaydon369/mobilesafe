@@ -23,7 +23,7 @@ public class AppInfoProvider {
 		List<AppInfo> appList = new ArrayList<AppInfo>();
 		for (PackageInfo info : packages) {
 			String packageName = info.packageName;// 包名
-			Drawable icon = info.applicationInfo.loadIcon(pm);// app图标
+			Drawable icon = info.applicationInfo.loadIcon(pm);// Amp图标
 			String appName = info.applicationInfo.loadLabel(pm).toString();// app名称
 			String apkPath = info.applicationInfo.sourceDir;// 安装路径
 			int flags = info.applicationInfo.flags;

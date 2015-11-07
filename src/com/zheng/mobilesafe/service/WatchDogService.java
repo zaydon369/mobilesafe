@@ -3,6 +3,7 @@ package com.zheng.mobilesafe.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.zheng.mobilesafe.activities.EnterPasswordActivity;
 import com.zheng.mobilesafe.db.dao.AppLockDao;
 
 import android.app.ActivityManager;
@@ -49,8 +50,14 @@ public class WatchDogService extends Service {
 							.getPackageName();
 					// 当当前运行的程序在加锁列表时,弹出提示
 					if (allLockapps.contains(packageName)) {
-						System.out.println(packageName + "在加锁列表");
+						//System.out.println(packageName + "在加锁列表");
+						//弹出对话框,提示输入密码
+						Intent intent=new Intent(getApplicationContext(), EnterPasswordActivity.class);
+						intent.putExtra("packageName", packageName);
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
 					}
+					//睡眠,避免监控频繁造成浪费
 					SystemClock.sleep(30);
 				}
 			};
