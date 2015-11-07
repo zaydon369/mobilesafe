@@ -31,6 +31,7 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE"/>
     <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:allowBackup="true"
@@ -143,6 +144,8 @@
         <service android:name="com.zheng.mobilesafe.service.ShowAddressService" >
         </service>
         <service android:name="com.zheng.mobilesafe.service.UpdateWidgetService"></service>
+        <!-- 程序锁服务 -->
+        <service android:name="com.zheng.mobilesafe.service.WatchDogService"></service>
     </application>
 
 </manifest>
