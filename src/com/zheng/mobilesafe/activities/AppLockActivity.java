@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.zheng.mobilesafe.R;
 import com.zheng.mobilesafe.baseadapter.MyBaseAdapter;
 import com.zheng.mobilesafe.baseholder.MyBaseHolder;
+import com.zheng.mobilesafe.db.dao.AppLockDao;
 import com.zheng.mobilesafe.domain.AppInfo;
 import com.zheng.mobilesafe.engine.AppInfoProvider;
 
@@ -30,7 +31,6 @@ public class AppLockActivity extends Activity {
 	private ListView lv_applock_locked;
 	private TextView tv_applock_unlock_count;
 	private TextView tv_applock_locked_count;
-	private List<AppInfo> allAppInfos;
 	private List<AppInfo> unlockAppInfos;
 	private List<AppInfo> lockedAppInfos;
 	private TextView tv_applock_show_unlock;
@@ -38,6 +38,7 @@ public class AppLockActivity extends Activity {
 	private LinearLayout ll_applock_unlock;
 	private LinearLayout ll_applock_locked;
 	private RelativeLayout rl_applock_pro;
+	private AppLockDao dao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,27 +54,15 @@ public class AppLockActivity extends Activity {
 		ll_applock_unlock = (LinearLayout) findViewById(R.id.ll_applock_unlock);
 		ll_applock_locked = (LinearLayout) findViewById(R.id.ll_applock_locked);
 		rl_applock_pro = (RelativeLayout) findViewById(R.id.rl_applock_pro);
-		
+		//加锁app的数据库操作对象
+		dao = new AppLockDao(mcontext);
 		lockedAppInfos = new ArrayList<AppInfo>();
 		unlockAppInfos = new ArrayList<AppInfo>();
 		//提示正在加载...
 		// 在子线程初始化数据
 		new Thread() {
 			public void run() {
-				allAppInfos = AppInfoProvider.getAllAppInfos(mcontext);
-				pm = getPackageManager();
-				String packageName;
-				for (int i = 0; i < allAppInfos.size(); i++) {
-					packageName = allAppInfos.get(i).getPackageName();
-					// 如果没有界面就过滤掉
-					if (pm.getLaunchIntentForPackage(packageName) == null) {
-						allAppInfos.remove(i);
-						i--;
-
-					}
-				}
-				// 剔除没有界面的APP后,将剩余的APP赋值给未加锁
-				unlockAppInfos = allAppInfos;
+				initData();
 				runOnUiThread(new Runnable() {
 
 					@Override
@@ -85,6 +74,35 @@ public class AppLockActivity extends Activity {
 
 				});
 
+			}
+/**
+ * 初始化数据,加锁列表和未加锁类表
+ */
+			private void initData() {
+				List<AppInfo>	allAppInfos = AppInfoProvider.getAllAppInfos(mcontext);
+				pm = getPackageManager();
+				//从数据库中查找所有加锁的app
+				ArrayList allLockapps = dao.findAllLockapps();
+				String packageName;
+				AppInfo appInfo;
+				for (int i = 0; i < allAppInfos.size(); i++) {
+					appInfo=allAppInfos.get(i);
+					packageName =appInfo .getPackageName();
+					// 如果没有界面就过滤掉
+					if (pm.getLaunchIntentForPackage(packageName) == null) {
+						allAppInfos.remove(i);
+						i--;
+						continue;
+					}
+					//如果加锁APP列表中包含该APP就把该APP移到加锁列表中
+					if(allLockapps.contains(packageName)){
+						lockedAppInfos.add(appInfo);
+						//allAppInfos.remove(i);
+					}else{
+						//如果加锁列表中没有则移到未加锁
+						unlockAppInfos.add(appInfo);
+					}
+				}
 			};
 		}.start();
 
@@ -124,13 +142,18 @@ public class AppLockActivity extends Activity {
 		tv_applock_unlock_count
 				.setText("未加锁程序共:" + unlockAppInfos.size() + "个");
 		lv_applock_unlock.setAdapter(unlockAdaper);
-		// 给条目添加点击事件
+		// 给条目添加点击事件,点击将APP加锁,并移除未加锁列表
 		lv_applock_unlock.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				lockedAppInfos.add(unlockAppInfos.get(position));
+				AppInfo appInfo=unlockAppInfos.get(position);
+				//向加锁app集合添加APP
+				lockedAppInfos.add(appInfo);
+				//向数据库添加数据
+				dao.addLockapp(appInfo.getPackageName());
+				//从未加锁列表中移除
 				unlockAppInfos.remove(position);
 				// 修改数据完后,通知适配器更新数据
 				unlockAdaper.notifyDataSetChanged();
@@ -158,13 +181,18 @@ public class AppLockActivity extends Activity {
 		tv_applock_locked_count
 				.setText("已加锁程序共:" + lockedAppInfos.size() + "个");
 		lv_applock_locked.setAdapter(lockedAdaper);
-		// 给已加锁的list条目添加点击事件
+		// 给已加锁的list条目添加点击事件,点击从已加锁列表移除,添加到未加锁
 		lv_applock_locked.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				unlockAppInfos.add(lockedAppInfos.get(position));
+				AppInfo appInfo=lockedAppInfos.get(position);
+				//添加到未加锁列表
+				unlockAppInfos.add(appInfo);
+				//从加锁数据空中删除
+				dao.deleteLockapp(appInfo.getPackageName());
+				//从已加锁中移除
 				lockedAppInfos.remove(position);
 				// 修改数据完后,通知适配器更新数据
 				lockedAdaper.notifyDataSetChanged();

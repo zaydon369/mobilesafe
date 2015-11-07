@@ -1,5 +1,7 @@
 package com.zheng.mobilesafe.db.dao;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -63,5 +65,18 @@ public class AppLockDao {
 		flag = (db.delete("lockinfo", "packname=?", new String[] { packName }) > 0);
 		db.close();
 		return flag;
+	}
+
+	public ArrayList findAllLockapps() {
+		ArrayList<String> allLockapps = new ArrayList<String>();
+		SQLiteDatabase db = helper.getReadableDatabase();
+		Cursor cursor = db.query("lockinfo", new String[] { "packname" }, null,
+				null, null, null, null, null);
+		while(cursor.moveToNext()){
+			allLockapps.add(cursor.getString(0));
+		}
+		cursor.close();
+		db.close();
+		return allLockapps;
 	}
 }

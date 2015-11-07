@@ -21,6 +21,10 @@ public class TestLockappDAO extends AndroidTestCase{
 		AppLockDao dao=new AppLockDao(getContext());
 		System.out.println(dao.findLockapp("packname1"));
 	}
+	public void testFindAllLock(){
+		AppLockDao dao=new AppLockDao(getContext());
+		System.out.println(dao.findAllLockapps());
+	}
 	
 
 }
